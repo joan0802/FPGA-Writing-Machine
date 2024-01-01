@@ -445,11 +445,11 @@ module music (
 				12'd52: toneR = `hg;  12'd53: toneR = `hg;
 				12'd54: toneR = `hg;  12'd55: toneR = `hg;
 				12'd56: toneR = `hg;  12'd57: toneR = `hg;
+				12'd58: toneR = `hg;  12'd59: toneR = `hg;
 				// Coin
-				12'd58: toneR = `hb;  12'd59: toneR = `hb;
 				12'd60: toneR = `hb;  12'd61: toneR = `hb;
 				12'd62: toneR = `hb;  12'd63: toneR = `hb;
-				12'd64: toneR = `hhe;  12'd65: toneR = `hhe;
+				12'd64: toneR = `hb;  12'd65: toneR = `hb;
 				12'd66: toneR = `hhe;  12'd67: toneR = `hhe;
 				12'd68: toneR = `hhe;  12'd69: toneR = `hhe;
 				12'd70: toneR = `hhe;  12'd71: toneR = `hhe;
@@ -458,6 +458,7 @@ module music (
 				12'd76: toneR = `hhe;  12'd77: toneR = `hhe;
 				12'd78: toneR = `hhe;  12'd79: toneR = `hhe;
 				12'd80: toneR = `hhe;  12'd81: toneR = `hhe;
+				12'd82: toneR = `hhe;  12'd83: toneR = `hhe;
                 default: toneR = `sil;
             endcase
         end
@@ -602,11 +603,11 @@ module music (
 				12'd52: toneL= `la;  12'd53: toneL= `la;
 				12'd54: toneL= `la;  12'd55: toneL= `la;
 				12'd56: toneL= `la;  12'd57: toneL= `la;
+				12'd58: toneL = `la;  12'd59: toneL = `la;
 				// Coin
-				12'd58: toneL = `hb;  12'd59: toneL = `hb;
 				12'd60: toneL = `hb;  12'd61: toneL = `hb;
 				12'd62: toneL = `hb;  12'd63: toneL = `hb;
-				12'd64: toneL = `hhe;  12'd65: toneL = `hhe;
+				12'd64: toneL = `hb;  12'd65: toneL = `hb;
 				12'd66: toneL = `hhe;  12'd67: toneL = `hhe;
 				12'd68: toneL = `hhe;  12'd69: toneL = `hhe;
 				12'd70: toneL = `hhe;  12'd71: toneL = `hhe;
@@ -615,6 +616,7 @@ module music (
 				12'd76: toneL = `hhe;  12'd77: toneL = `hhe;
 				12'd78: toneL = `hhe;  12'd79: toneL = `hhe;
 				12'd80: toneL = `hhe;  12'd81: toneL = `hhe;
+				12'd82: toneL = `hhe;  12'd83: toneL = `hhe;
                 default: toneL= `sil;
             endcase
         end
