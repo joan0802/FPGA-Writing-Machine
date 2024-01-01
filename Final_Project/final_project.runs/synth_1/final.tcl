@@ -25,21 +25,21 @@ set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.cache/wt [current_project]
-set_property parent.project_path C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.xpr [current_project]
+set_property webtalk.parent_dir C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.cache/wt [current_project]
+set_property parent.project_path C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_repo_paths c:/Users/Joan/OneDrive/HardwareDesign/Final_Project/ip/Keyboard-Controller [current_project]
+set_property ip_repo_paths c:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/ip/Keyboard-Controller [current_project]
 update_ip_catalog
-set_property ip_output_repo c:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.cache/ip [current_project]
+set_property ip_output_repo c:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog -library xil_defaultlib {
-  C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v
-  C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.srcs/sources_1/new/clock_divider.v
-  C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.srcs/sources_1/new/one_pulse.v
-  C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.srcs/sources_1/new/final.v
+  C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v
+  C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v
+  C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.srcs/sources_1/new/one_pulse.v
+  C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v
 }
-read_ip -quiet c:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
+read_ip -quiet C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
 
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -49,8 +49,8 @@ read_ip -quiet c:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/Basys3_Constraints.xdc
-set_property used_in_implementation false [get_files C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/Basys3_Constraints.xdc]
+read_xdc C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/Basys3_Constraints.xdc
+set_property used_in_implementation false [get_files C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/Basys3_Constraints.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
