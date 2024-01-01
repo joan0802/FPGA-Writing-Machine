@@ -1,26 +1,37 @@
 `define lc  32'd131   // C3
 `define ld  32'd147   // D3
+`define lbe 32'd156
 `define le  32'd165   // E3
 `define lf  32'd174   // F3
 `define lg  32'd196   // G3
+`define lba 32'd208
 `define la  32'd220   // A3
 `define lb  32'd247   // B3
+`define lbb 32'd233
 `define c   32'd262   // C4
 `define d   32'd294   // D4
+`define be  32'd311
 `define e   32'd330   // E4
 `define f   32'd349   // F4
 `define g   32'd392   // G4
+`define ba  32'd415
 `define a   32'd440   // A4
+`define bb  32'd466
 `define b   32'd494   // B4
 `define hc  32'd523   // C5
 `define hd  32'd587   // D5
+`define hbe 32'd622 
 `define he  32'd659   // E5
 `define hf  32'd698   // F5
 `define hg  32'd784   // G5 
+`define hba 32'd831 
 `define ha  32'd880   // A5
+`define hbb 32'd932
 `define hb  32'd988   // B5
-
+`define hhc 32'd1047
+`define hhe 32'd1319
 `define sil   32'd50000000 // slience
+
 module final(
     input wire clk,
     input wire rst,
@@ -172,7 +183,7 @@ end
 reg [15:0] next_led;
 always @(posedge clk or posedge rst) begin
 	if (rst) begin
-		LED <= 16'b0000_0000_0000_0000;
+		LED <= 16'b1111_0000_0000_0000;
 	end
 	else begin
 		LED <= next_led;
@@ -180,7 +191,7 @@ always @(posedge clk or posedge rst) begin
 end
 always @* begin
 	if(rst) begin
-		next_led = 16'd0;
+		next_led = 16'b1111_0000_0000_0000;
 	end
 	else begin
 		next_led = 16'd0;
@@ -404,6 +415,7 @@ module music (
         end
         else if(state == TYPING) begin
             case(ibeatNum)
+				// Start
 				12'd0: toneR = `he;  12'd1: toneR = `he;
 				12'd2: toneR = `he;  12'd3: toneR = `he;
 				12'd4: toneR = `he;  12'd5: toneR = `he;
@@ -433,11 +445,122 @@ module music (
 				12'd52: toneR = `hg;  12'd53: toneR = `hg;
 				12'd54: toneR = `hg;  12'd55: toneR = `hg;
 				12'd56: toneR = `hg;  12'd57: toneR = `hg;
+				// Coin
+				12'd58: toneR = `hb;  12'd59: toneR = `hb;
+				12'd60: toneR = `hb;  12'd61: toneR = `hb;
+				12'd62: toneR = `hb;  12'd63: toneR = `hb;
+				12'd64: toneR = `hhe;  12'd65: toneR = `hhe;
+				12'd66: toneR = `hhe;  12'd67: toneR = `hhe;
+				12'd68: toneR = `hhe;  12'd69: toneR = `hhe;
+				12'd70: toneR = `hhe;  12'd71: toneR = `hhe;
+				12'd72: toneR = `hhe;  12'd73: toneR = `hhe;
+				12'd74: toneR = `hhe;  12'd75: toneR = `hhe;
+				12'd76: toneR = `hhe;  12'd77: toneR = `hhe;
+				12'd78: toneR = `hhe;  12'd79: toneR = `hhe;
+				12'd80: toneR = `hhe;  12'd81: toneR = `hhe;
                 default: toneR = `sil;
             endcase
         end
 		else if(state == WRITING) begin
-            toneR = `sil;
+            case(ibeatNum)
+				// End
+				12'd0: toneR = `sil;  12'd1: toneR = `sil;
+				12'd2: toneR = `sil;  12'd3: toneR = `sil;
+				12'd4: toneR = `c;  12'd5: toneR = `c;
+				12'd6: toneR = `c;  12'd7: toneR = `c;
+				12'd8: toneR = `e;  12'd9: toneR = `e;
+				12'd10: toneR = `e;  12'd11: toneR = `e;
+				12'd12: toneR = `g;  12'd13: toneR = `g;
+				12'd14: toneR = `g;  12'd15: toneR = `g;
+				12'd16: toneR = `hc;  12'd17: toneR = `hc;
+				12'd18: toneR = `hc;  12'd19: toneR = `hc;
+				12'd20: toneR = `he;  12'd21: toneR = `he;
+				12'd22: toneR = `he;  12'd23: toneR = `he;
+				12'd24: toneR = `hg;  12'd25: toneR = `hg;
+				12'd26: toneR = `hg;  12'd27: toneR = `hg;
+				12'd28: toneR = `hg;  12'd29: toneR = `hg;
+				12'd30: toneR = `hg;  12'd31: toneR = `hg;
+				12'd32: toneR = `hg;  12'd33: toneR = `hg;
+				12'd34: toneR = `hg;  12'd35: toneR = `hg;
+				12'd36: toneR = `he;  12'd37: toneR = `he;
+				12'd38: toneR = `he;  12'd39: toneR = `he;
+				12'd40: toneR = `he;  12'd41: toneR = `he;
+				12'd42: toneR = `sil;  12'd43: toneR = `sil;
+				12'd44: toneR = `sil;  12'd45: toneR = `sil;
+				12'd46: toneR = `sil;  12'd47: toneR = `sil;
+				12'd48: toneR = `sil;  12'd49: toneR = `sil;
+				12'd50: toneR = `sil;  12'd51: toneR = `sil;
+				12'd52: toneR = `c;  12'd53: toneR = `c;
+				12'd54: toneR = `c;  12'd55: toneR = `c;
+				12'd56: toneR = `be;  12'd57: toneR = `be;
+				12'd58: toneR = `be;  12'd59: toneR = `be;
+				12'd60: toneR = `ba;  12'd61: toneR = `ba;
+				12'd62: toneR = `ba;  12'd63: toneR = `ba;
+				12'd64: toneR = `hc;  12'd65: toneR = `hc;
+				12'd66: toneR = `hc;  12'd67: toneR = `hc;
+				12'd68: toneR = `hbe;  12'd69: toneR = `hbe;
+				12'd70: toneR = `hbe;  12'd71: toneR = `hbe;
+				12'd72: toneR = `hba;  12'd73: toneR = `hba;
+				12'd74: toneR = `hba;  12'd75: toneR = `hba;
+				12'd76: toneR = `hba;  12'd77: toneR = `hba;
+				12'd78: toneR = `hba;  12'd79: toneR = `hba;
+				12'd80: toneR = `hba;  12'd81: toneR = `hba;
+				12'd82: toneR = `hba;  12'd83: toneR = `hba;
+				12'd84: toneR = `hf;  12'd85: toneR = `hf;
+				12'd86: toneR = `hf;  12'd87: toneR = `hf;
+				12'd88: toneR = `hf;  12'd89: toneR = `hf;
+				12'd90: toneR = `sil;  12'd91: toneR = `sil;
+				12'd92: toneR = `sil;  12'd93: toneR = `sil;
+				12'd94: toneR = `sil;  12'd95: toneR = `sil;
+				12'd96: toneR = `sil;  12'd97: toneR = `sil;
+				12'd98: toneR = `sil;  12'd99: toneR = `sil;
+				12'd100: toneR = `d;  12'd101: toneR = `d;
+				12'd102: toneR = `d;  12'd103: toneR = `d;
+				12'd104: toneR = `f;  12'd105: toneR = `f;
+				12'd106: toneR = `f;  12'd107: toneR = `f;
+				12'd108: toneR = `bb;  12'd109: toneR = `bb;
+				12'd110: toneR = `bb;  12'd111: toneR = `bb;
+				12'd112: toneR = `hd;  12'd113: toneR = `hd;
+				12'd114: toneR = `hd;  12'd115: toneR = `hd;
+				12'd116: toneR = `hf;  12'd117: toneR = `hf;
+				12'd118: toneR = `hf;  12'd119: toneR = `hf;
+				12'd120: toneR = `hbb;  12'd121: toneR = `hbb;
+				12'd122: toneR = `hbb;  12'd123: toneR = `hbb;
+				12'd124: toneR = `hbb;  12'd125: toneR = `hbb;
+				12'd126: toneR = `hbb;  12'd127: toneR = `hbb;
+				12'd128: toneR = `hbb;  12'd129: toneR = `hbb;
+				12'd130: toneR = `hbb;  12'd131: toneR = `hbb;
+				12'd132: toneR = `hb;  12'd133: toneR = `hb;
+				12'd134: toneR = `sil;  12'd135: toneR = `sil;
+				12'd136: toneR = `hb;  12'd137: toneR = `hb;
+				12'd138: toneR = `sil;  12'd139: toneR = `sil;
+				12'd140: toneR = `hb;  12'd141: toneR = `hb;
+				12'd142: toneR = `hb;  12'd143: toneR = `hb;
+				12'd144: toneR = `hhc;  12'd145: toneR = `hhc;
+				12'd146: toneR = `hhc;  12'd147: toneR = `hhc;
+				12'd148: toneR = `hhc;  12'd149: toneR = `hhc;
+				12'd150: toneR = `hhc;  12'd151: toneR = `hhc;
+				12'd152: toneR = `hhc;  12'd153: toneR = `hhc;
+				12'd154: toneR = `hhc;  12'd155: toneR = `hhc;
+				12'd156: toneR = `hhc;  12'd157: toneR = `hhc;
+				12'd158: toneR = `hhc;  12'd159: toneR = `hhc;
+				12'd160: toneR = `hhc;  12'd161: toneR = `hhc;
+				12'd162: toneR = `hhc;  12'd163: toneR = `hhc;
+				12'd164: toneR = `hhc;  12'd165: toneR = `hhc;
+				12'd166: toneR = `hhc;  12'd167: toneR = `hhc;
+				12'd168: toneR = `hhc;  12'd169: toneR = `hhc;
+				12'd170: toneR = `hhc;  12'd171: toneR = `hhc;
+				12'd172: toneR = `hhc;  12'd173: toneR = `hhc;
+				12'd174: toneR = `hhc;  12'd175: toneR = `hhc;
+				12'd176: toneR = `hhc;  12'd177: toneR = `hhc;
+				12'd178: toneR = `hhc;  12'd179: toneR = `hhc;
+				12'd180: toneR = `hhc;  12'd181: toneR = `hhc;
+				12'd182: toneR = `hhc;  12'd183: toneR = `hhc;
+				12'd184: toneR = `hhc;  12'd185: toneR = `hhc;
+				12'd186: toneR = `hhc;  12'd187: toneR = `hhc;
+				12'd188: toneR = `hhc;  12'd189: toneR = `hhc;
+				12'd190: toneR = `hhc;  12'd191: toneR = `hhc;
+			endcase
         end
 		else
 			toneR = `sil;
@@ -449,7 +572,7 @@ module music (
         end
         else if(state == TYPING) begin
             case(ibeatNum)
-                // --- Measure 0 ---
+                // Start
 				12'd0: toneL= `le;  12'd1: toneL= `le;
 				12'd2: toneL= `le;  12'd3: toneL= `le;
 				12'd4: toneL= `le;  12'd5: toneL= `le;
@@ -479,11 +602,122 @@ module music (
 				12'd52: toneL= `la;  12'd53: toneL= `la;
 				12'd54: toneL= `la;  12'd55: toneL= `la;
 				12'd56: toneL= `la;  12'd57: toneL= `la;
+				// Coin
+				12'd58: toneL = `hb;  12'd59: toneL = `hb;
+				12'd60: toneL = `hb;  12'd61: toneL = `hb;
+				12'd62: toneL = `hb;  12'd63: toneL = `hb;
+				12'd64: toneL = `hhe;  12'd65: toneL = `hhe;
+				12'd66: toneL = `hhe;  12'd67: toneL = `hhe;
+				12'd68: toneL = `hhe;  12'd69: toneL = `hhe;
+				12'd70: toneL = `hhe;  12'd71: toneL = `hhe;
+				12'd72: toneL = `hhe;  12'd73: toneL = `hhe;
+				12'd74: toneL = `hhe;  12'd75: toneL = `hhe;
+				12'd76: toneL = `hhe;  12'd77: toneL = `hhe;
+				12'd78: toneL = `hhe;  12'd79: toneL = `hhe;
+				12'd80: toneL = `hhe;  12'd81: toneL = `hhe;
                 default: toneL= `sil;
             endcase
         end
         else if(state == WRITING) begin
-            toneL = `sil;
+            case(ibeatNum)
+				// End
+				12'd0: toneL = `lg;  12'd1: toneL = `lg;
+				12'd2: toneL = `lg;  12'd3: toneL = `lg;
+				12'd4: toneL = `le;  12'd5: toneL = `le;
+				12'd6: toneL = `le;  12'd7: toneL = `le;
+				12'd8: toneL = `lg;  12'd9: toneL = `lg;
+				12'd10: toneL = `lg;  12'd11: toneL = `lg;
+				12'd12: toneL = `le;  12'd13: toneL = `le;
+				12'd14: toneL = `le;  12'd15: toneL = `le;
+				12'd16: toneL = `lg;  12'd17: toneL = `lg;
+				12'd18: toneL = `lg;  12'd19: toneL = `lg;
+				12'd20: toneL = `c;  12'd21: toneL = `c;
+				12'd22: toneL = `c;  12'd23: toneL = `c;
+				12'd24: toneL = `e;  12'd25: toneL = `e;
+				12'd26: toneL = `e;  12'd27: toneL = `e;
+				12'd28: toneL = `e;  12'd29: toneL = `e;
+				12'd30: toneL = `e;  12'd31: toneL = `e;
+				12'd32: toneL = `e;  12'd33: toneL = `e;
+				12'd34: toneL = `e;  12'd35: toneL = `e;
+				12'd36: toneL = `c;  12'd37: toneL = `c;
+				12'd38: toneL = `c;  12'd39: toneL = `c;
+				12'd40: toneL = `c;  12'd41: toneL = `c;
+				12'd42: toneL = `sil;  12'd43: toneL = `sil;
+				12'd44: toneL = `sil;  12'd45: toneL = `sil;
+				12'd46: toneL = `sil;  12'd47: toneL = `sil;
+				12'd48: toneL = `lba;  12'd49: toneL = `lba;
+				12'd50: toneL = `lba;  12'd51: toneL = `lba;
+				12'd52: toneL = `lbe;  12'd53: toneL = `lbe;
+				12'd54: toneL = `lbe;  12'd55: toneL = `lbe;
+				12'd56: toneL = `la;  12'd57: toneL = `la;
+				12'd58: toneL = `la;  12'd59: toneL = `la;
+				12'd60: toneL = `le;  12'd61: toneL = `le;
+				12'd62: toneL = `le;  12'd63: toneL = `le;
+				12'd64: toneL = `la;  12'd65: toneL = `la;
+				12'd66: toneL = `la;  12'd67: toneL = `la;
+				12'd68: toneL = `c;  12'd69: toneL = `c;
+				12'd70: toneL = `c;  12'd71: toneL = `c;
+				12'd72: toneL = `be;  12'd73: toneL = `be;
+				12'd74: toneL = `be;  12'd75: toneL = `be;
+				12'd76: toneL = `be;  12'd77: toneL = `be;
+				12'd78: toneL = `be;  12'd79: toneL = `be;
+				12'd80: toneL = `be;  12'd81: toneL = `be;
+				12'd82: toneL = `be;  12'd83: toneL = `be;
+				12'd84: toneL = `c;  12'd85: toneL = `c;
+				12'd86: toneL = `c;  12'd87: toneL = `c;
+				12'd88: toneL = `c;  12'd89: toneL = `c;
+				12'd90: toneL = `sil;  12'd91: toneL = `sil;
+				12'd92: toneL = `sil;  12'd93: toneL = `sil;
+				12'd94: toneL = `sil;  12'd95: toneL = `sil;
+				12'd96: toneL = `lbb;  12'd97: toneL = `lbb;
+				12'd98: toneL = `lbb;  12'd99: toneL = `lbb;
+				12'd100: toneL = `lf;  12'd101: toneL = `lf;
+				12'd102: toneL = `lf;  12'd103: toneL = `lf;
+				12'd104: toneL = `lb;  12'd105: toneL = `lb;
+				12'd106: toneL = `lb;  12'd107: toneL = `lb;
+				12'd108: toneL = `lf;  12'd109: toneL = `lf;
+				12'd110: toneL = `lf;  12'd111: toneL = `lf;
+				12'd112: toneL = `lb;  12'd113: toneL = `lb;
+				12'd114: toneL = `lb;  12'd115: toneL = `lb;
+				12'd116: toneL = `d;  12'd117: toneL = `d;
+				12'd118: toneL = `d;  12'd119: toneL = `d;
+				12'd120: toneL = `f;  12'd121: toneL = `f;
+				12'd122: toneL = `f;  12'd123: toneL = `f;
+				12'd124: toneL = `f;  12'd125: toneL = `f;
+				12'd126: toneL = `f;  12'd127: toneL = `f;
+				12'd128: toneL = `f;  12'd129: toneL = `f;
+				12'd130: toneL = `f;  12'd131: toneL = `f;
+				12'd132: toneL = `d;  12'd133: toneL = `d;
+				12'd134: toneL = `d;  12'd135: toneL = `sil;
+				12'd136: toneL = `d;  12'd137: toneL = `d;
+				12'd138: toneL = `d;  12'd139: toneL = `sil;
+				12'd140: toneL = `d;  12'd141: toneL = `d;
+				12'd142: toneL = `d;  12'd143: toneL = `d;
+				12'd144: toneL = `c;  12'd145: toneL = `c;
+				12'd146: toneL = `c;  12'd147: toneL = `c;
+				12'd148: toneL = `c;  12'd149: toneL = `c;
+				12'd150: toneL = `c;  12'd151: toneL = `c;
+				12'd152: toneL = `c;  12'd153: toneL = `c;
+				12'd154: toneL = `c;  12'd155: toneL = `c;
+				12'd156: toneL = `c;  12'd157: toneL = `c;
+				12'd158: toneL = `c;  12'd159: toneL = `c;
+				12'd160: toneL = `c;  12'd161: toneL = `c;
+				12'd162: toneL = `c;  12'd163: toneL = `c;
+				12'd164: toneL = `c;  12'd165: toneL = `c;
+				12'd166: toneL = `c;  12'd167: toneL = `c;
+				12'd168: toneL = `c;  12'd169: toneL = `c;
+				12'd170: toneL = `c;  12'd171: toneL = `c;
+				12'd172: toneL = `c;  12'd173: toneL = `c;
+				12'd174: toneL = `c;  12'd175: toneL = `c;
+				12'd176: toneL = `c;  12'd177: toneL = `c;
+				12'd178: toneL = `c;  12'd179: toneL = `c;
+				12'd180: toneL = `c;  12'd181: toneL = `c;
+				12'd182: toneL = `c;  12'd183: toneL = `c;
+				12'd184: toneL = `c;  12'd185: toneL = `c;
+				12'd186: toneL = `c;  12'd187: toneL = `c;
+				12'd188: toneL = `c;  12'd189: toneL = `c;
+				12'd190: toneL = `c;  12'd191: toneL = `c;
+			endcase
         end
 		else
 			toneL = `sil;
