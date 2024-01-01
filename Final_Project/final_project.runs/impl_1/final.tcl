@@ -68,7 +68,7 @@ set rc [catch {
   set_param chipscope.maxJobs 2
   set_param xicom.use_bs_reader 1
   open_checkpoint final_routed.dcp
-  set_property webtalk.parent_dir C:/Users/Joan/OneDrive/HardwareDesign/Final_Project/final_project.cache/wt [current_project]
+  set_property webtalk.parent_dir C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.cache/wt [current_project]
   catch { write_mem_info -force final.mmi }
   write_bitstream -force final.bit 
   catch {write_debug_probes -quiet -force final}

@@ -9,6 +9,10 @@ module final(
     inout wire PS2_DATA,
     inout wire PS2_CLK,
     output reg [15:0] LED,
+	// output audio_mclk, // master clock
+    // output audio_lrck, // left-right clock
+    // output audio_sck,  // serial clock
+    // output audio_sdin, // serial audio data input
     output reg [3:0] digit,
     output reg [6:0] display
 );
@@ -34,6 +38,14 @@ wire clk_used;
 clock_divider #(14) div1(.clk(clk), .clk_div(clk_used));
 // Writing
 reg finish_writing;
+// Audio
+wire [15:0] audio_in_left, audio_in_right;
+wire [11:0] ibeatNum;               // Beat counter
+wire [11:0] ibeat1, ibeat2;
+wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
+wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
+wire clk_div22;
+clock_divider #(.n(22)) clock_22(.clk(clk), .clk_div(clk_div22));
 
 KeyboardDecoder kbd(
 	.key_down(key_down),
@@ -124,7 +136,7 @@ always @* begin
 	end
 end
 
-//Write
+// Write
 always @* begin
 	if(rst) begin
 		finish_writing = 1'b0;
@@ -147,7 +159,14 @@ always @(posedge clk_used, posedge rst) begin
         num[15:12] <= 4'd10;
 	end
 	else begin
-        num <= next_num;
+		if(state == IDLE) begin
+			num[3:0] <= 4'd10;
+			num[7:4] <= 4'd10;
+			num[11:8] <= 4'd10;
+			num[15:12] <= 4'd10;
+		end
+		else
+        	num <= next_num;
     end
 end
 
@@ -158,8 +177,8 @@ always @(*) begin
         next_num[11:8] = 4'd10;
         next_num[15:12] = 4'd10;
     end
-    else  begin
-        // if(state == TYPING)
+    else begin
+        if(state == TYPING) begin
             if(key_valid == 1'b1 && key_down[last_change] == 1'b1 && (isPressed == 1'b0)) begin
                 if(key_num <= 4'd9 && key_num >= 0) begin
                     next_num[15:12] = num[11:8];
@@ -174,13 +193,20 @@ always @(*) begin
                     next_num[15:12] = 4'd10;
                 end
                 else begin
-                    next_num[3:0] = num[3:0];
-                    next_num[7:4] = num[7:4];
-                    next_num[11:8] = num[11:8];
-                    next_num[15:12] = num[15:12];
+                    next_num = next_num;
                 end
             end
-        // end
+			else
+				next_num = next_num;
+		end
+		else if(state == WRITING)
+			next_num = next_num;
+		else begin // IDLE
+			next_num[3:0] = 4'd10;
+			next_num[7:4] = 4'd10;
+			next_num[11:8] = 4'd10;
+			next_num[15:12] = 4'd10;
+		end
     end
 end
 
@@ -224,7 +250,7 @@ always @(*) begin
 	if(rst)
 		next_isPressed = 1'b0;
 	else begin
-		// if(state == TYPING) begin
+		if(state == TYPING) begin
 			next_isPressed = 1'b0;
 			for(i = 0; i < 22; i = i + 1) begin
 				if(key_down[KEY_CODES[i]] == 1'b1)
@@ -232,9 +258,9 @@ always @(*) begin
 				else
 					next_isPressed = next_isPressed;
 			end
-		// end
-		// else
-		// 	next_isPressed = 1'b0;
+		end
+		else
+			next_isPressed = 1'b0;
 	end
 end
 
@@ -263,19 +289,15 @@ always @(posedge clk_used) begin
         end
     endcase
 end
-
+// BCD
 always @(*) begin
 	case (state)
-	// IDLE: begin
-	// 	BCD0 = 4'd10;
-	// 	BCD1 = 4'd10;
-	// 	BCD2 = 4'd10;
-	// 	BCD3 = 4'd10;
-	// end
-    // TYPING: begin
-    // end
-    // WRITING begin
-    // end
+	IDLE: begin
+		BCD0 = 4'd10;
+		BCD1 = 4'd10;
+		BCD2 = 4'd10;
+		BCD3 = 4'd10;
+	end
 	default: begin
 		BCD0 = num[3:0];
 		BCD1 = num[7:4];
@@ -284,7 +306,7 @@ always @(*) begin
 	end
 	endcase
 end
-
+// display
 always @(*) begin
     case(value)
         4'd0 : display = 7'b100_0000;
