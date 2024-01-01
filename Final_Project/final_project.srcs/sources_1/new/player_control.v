@@ -5,34 +5,48 @@ module player_control (
 	output reg [11:0] ibeat
 );
 	// state
-	parameter [1:0] IDLE = 2'b00;
-	parameter [1:0] TYPING = 2'b01;
-	parameter [1:0] WRITING = 2'b10;
-	reg [11:0] LEN;
-    reg [11:0] next_ibeat;
+	parameter IDLE = 2'b00;
+	parameter TYPING = 2'b01;
+	parameter WRITING = 2'b10;
 
-	always @(*) begin
-		if(state == IDLE) begin
-			LEN = 12'd0;
-		end 
-		else if(state == TYPING) begin
-			LEN = 12'd512;
-		end 
-		else if(state == WRITING) begin
-			LEN = 12'd192;
-		end
-	end
+	parameter LEN_start = 60;
+	parameter LEN_end = 192;
+    
+	reg [11:0] next_ibeat1, next_ibeat2;
+	// assign ibeat = (state == TYPING) ? next_ibeat1 : next_ibeat2;
 
 	always @(posedge clk, posedge reset) begin
 		if (reset) begin
 			ibeat <= 0;
 		end else begin
-            ibeat <= next_ibeat;
+			if(state == TYPING)
+				ibeat <= next_ibeat1;
+			else if(state == WRITING)
+				ibeat <= next_ibeat2;
+            else
+				ibeat <= 0;
 		end
 	end
 
     always @* begin
-        next_ibeat = (ibeat + 1 < LEN) ? (ibeat + 1) : LEN-1;
-    end
+		if(reset) begin
+			next_ibeat1 = 0;
+			next_ibeat2 = 0;
+		end
+		else begin
+			if(state == TYPING) begin
+				next_ibeat1 = (ibeat + 1 < LEN_start) ? (ibeat + 1) : LEN_start;
+				next_ibeat2 = 0;
+			end
+			else if(state == WRITING) begin
+				next_ibeat2 = (ibeat + 1 < LEN_end) ? (ibeat + 1) : LEN_end;
+				next_ibeat1 = 0;
+			end
+			else begin
+				next_ibeat1 = 0;
+				next_ibeat2 = 0;
+			end
+		end
+	end
 
 endmodule
