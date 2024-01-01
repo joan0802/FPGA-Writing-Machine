@@ -5,6 +5,7 @@ module final(
     input wire rst,
     input wire btnL,
     input wire btnR,
+	input wire SW0,
     inout wire PS2_DATA,
     inout wire PS2_CLK,
     output reg [15:0] LED,
@@ -31,6 +32,8 @@ reg [3:0] BCD0, BCD1, BCD2, BCD3;
 reg [3:0] value;
 wire clk_used;
 clock_divider #(14) div1(.clk(clk), .clk_div(clk_used));
+// Writing
+reg finish_writing;
 
 KeyboardDecoder kbd(
 	.key_down(key_down),
@@ -67,6 +70,74 @@ parameter [8:0] KEY_CODES [0:21] = {
     9'b0_0110_0110, // BACK
     9'b0_0101_1010  // ENTER
 };
+
+always @* begin
+	if(rst) next_state = IDLE;
+	else begin
+		next_state = state;
+		case (state)
+			IDLE: begin
+				if(btnR == 1'b1) next_state = TYPING;
+			end
+			TYPING: begin //enter
+				if(key_valid == 1'b1 && key_down[last_change] == 1'b1) begin
+					if(last_change == 9'b0_0101_1010) next_state = WRITING;
+				end
+			end
+			WRITING: begin
+				if(finish_writing == 1'b1) next_state = IDLE;
+			end
+			default: next_state = IDLE;
+		endcase
+	end
+end
+
+always @(posedge clk or posedge rst) begin
+	if(rst) state <= IDLE;
+	else state <= next_state;
+end
+
+// LED
+reg [15:0] next_led;
+always @(posedge clk or posedge rst) begin
+	if (rst) begin
+		LED <= 16'b0000_0000_0000_0000;
+	end
+	else begin
+		LED <= next_led;
+	end
+end
+always @* begin
+	if(rst) begin
+		next_led = 16'd0;
+	end
+	else begin
+		next_led = 16'd0;
+		case(state)
+			IDLE: next_led[15:12] = 4'b1111;
+			TYPING: next_led[11:8] = 4'b1111;
+			WRITING: next_led[7:4] = 4'b1111;
+		endcase
+
+		if(SW0) next_led[0] = 1'b1;
+		else next_led[0] = 1'b0;
+	end
+end
+
+//Write
+always @* begin
+	if(rst) begin
+		finish_writing = 1'b0;
+	end
+	else begin
+		finish_writing = 1'b0;
+		if(state == WRITING) begin
+			if(btnL == 1'b1) begin
+				finish_writing = 1'b1;
+			end
+		end
+	end
+end
 
 always @(posedge clk_used, posedge rst) begin
 	if(rst) begin
