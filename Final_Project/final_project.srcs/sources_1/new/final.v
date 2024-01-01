@@ -1,5 +1,26 @@
-`timescale 1ns / 1ps
+`define lc  32'd131   // C3
+`define ld  32'd147   // D3
+`define le  32'd165   // E3
+`define lf  32'd174   // F3
+`define lg  32'd196   // G3
+`define la  32'd220   // A3
+`define lb  32'd247   // B3
+`define c   32'd262   // C4
+`define d   32'd294   // D4
+`define e   32'd330   // E4
+`define f   32'd349   // F4
+`define g   32'd392   // G4
+`define a   32'd440   // A4
+`define b   32'd494   // B4
+`define hc  32'd523   // C5
+`define hd  32'd587   // D5
+`define he  32'd659   // E5
+`define hf  32'd698   // F5
+`define hg  32'd784   // G5 
+`define ha  32'd880   // A5
+`define hb  32'd988   // B5
 
+`define sil   32'd50000000 // slience
 module final(
     input wire clk,
     input wire rst,
@@ -9,10 +30,10 @@ module final(
     inout wire PS2_DATA,
     inout wire PS2_CLK,
     output reg [15:0] LED,
-	// output audio_mclk, // master clock
-    // output audio_lrck, // left-right clock
-    // output audio_sck,  // serial clock
-    // output audio_sdin, // serial audio data input
+	output audio_mclk, // master clock
+    output audio_lrck, // left-right clock
+    output audio_sck,  // serial clock
+    output audio_sdin, // serial audio data input
     output reg [3:0] digit,
     output reg [6:0] display
 );
@@ -41,11 +62,13 @@ reg finish_writing;
 // Audio
 wire [15:0] audio_in_left, audio_in_right;
 wire [11:0] ibeatNum;               // Beat counter
-wire [11:0] ibeat1, ibeat2;
 wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
 wire clk_div22;
+
 clock_divider #(.n(22)) clock_22(.clk(clk), .clk_div(clk_div22));
+assign freq_outL = 50000000 / freqL;
+assign freq_outR = 50000000 / freqR;
 
 KeyboardDecoder kbd(
 	.key_down(key_down),
@@ -55,6 +78,42 @@ KeyboardDecoder kbd(
 	.PS2_CLK(PS2_CLK),
 	.rst(rst),
 	.clk(clk)
+);
+
+player_control playerCtrl_00 ( 
+	.clk(clk_div22),
+	.reset(rst),
+	.state(state),
+	.ibeat(ibeatNum)
+);
+
+speaker_control sc(
+	.clk(clk), 
+	.rst(rst), 
+	.audio_in_left(audio_in_left),      // left channel audio data input
+	.audio_in_right(audio_in_right),    // right channel audio data input
+	.audio_mclk(audio_mclk),            // master clock
+	.audio_lrck(audio_lrck),            // left-right clock
+	.audio_sck(audio_sck),              // serial clock
+	.audio_sdin(audio_sdin)             // serial audio data input
+);
+
+note_gen noteGen_00(
+	.clk(clk), 
+	.rst(rst), 
+	.note_div_left(freq_outL), 
+	.note_div_right(freq_outR), 
+	.audio_left(audio_in_left),     // left sound audio
+	.audio_right(audio_in_right)    // right sound audio
+);
+
+music music_00 (
+	.ibeatNum(ibeatNum),
+	.state(state),
+	.rst(rst),
+	.clk(clk),
+	.toneL(freqL),
+	.toneR(freqR)
 );
 
 parameter [8:0] KEY_CODES [0:21] = {
@@ -82,7 +141,7 @@ parameter [8:0] KEY_CODES [0:21] = {
     9'b0_0110_0110, // BACK
     9'b0_0101_1010  // ENTER
 };
-
+// state transition
 always @* begin
 	if(rst) next_state = IDLE;
 	else begin
@@ -103,7 +162,7 @@ always @* begin
 		endcase
 	end
 end
-
+// state transition
 always @(posedge clk or posedge rst) begin
 	if(rst) state <= IDLE;
 	else state <= next_state;
@@ -150,7 +209,7 @@ always @* begin
 		end
 	end
 end
-
+// num
 always @(posedge clk_used, posedge rst) begin
 	if(rst) begin
 		num[3:0] <= 4'd10;
@@ -169,7 +228,7 @@ always @(posedge clk_used, posedge rst) begin
         	num <= next_num;
     end
 end
-
+// num
 always @(*) begin
     if(rst) begin
         next_num[3:0] = 4'd10;
@@ -324,4 +383,109 @@ always @(*) begin
     endcase
 end
 
+endmodule
+
+module music (
+	input [11:0] ibeatNum,
+    input rst,
+    input clk,
+    input [2:0] state,
+	output reg [31:0] toneL,
+    output reg [31:0] toneR
+);
+	// state
+	parameter [1:0] IDLE = 2'b00;
+	parameter [1:0] TYPING = 2'b01;
+	parameter [1:0] WRITING = 2'b10;
+
+    always @* begin
+        if(rst) begin
+            toneR = `sil;
+        end
+        else if(state == TYPING) begin
+            case(ibeatNum)
+				12'd0: toneR = `he;  12'd1: toneR = `he;
+				12'd2: toneR = `he;  12'd3: toneR = `he;
+				12'd4: toneR = `he;  12'd5: toneR = `he;
+				12'd6: toneR = `he;  12'd7: toneR = `he;
+				12'd8: toneR = `he;  12'd9: toneR = `he;
+				12'd10: toneR = `he;  12'd11: toneR = `he;
+				12'd12: toneR = `sil;  12'd13: toneR = `sil;
+				12'd14: toneR = `sil;  12'd15: toneR = `sil;
+				12'd16: toneR = `sil;  12'd17: toneR = `sil;
+				12'd18: toneR = `he;  12'd19: toneR = `he;
+				12'd20: toneR = `he;  12'd21: toneR = `he;
+				12'd22: toneR = `he;  12'd23: toneR = `he;
+				12'd24: toneR = `sil;  12'd25: toneR = `sil;
+				12'd26: toneR = `sil;  12'd27: toneR = `sil;
+				12'd28: toneR = `sil;  12'd29: toneR = `sil;
+				12'd30: toneR = `hc;  12'd31: toneR = `hc;
+				12'd32: toneR = `hc;  12'd33: toneR = `hc;
+				12'd34: toneR = `hc;  12'd35: toneR = `hc;
+				12'd36: toneR = `he;  12'd37: toneR = `he;
+				12'd38: toneR = `he;  12'd39: toneR = `he;
+				12'd40: toneR = `he;  12'd41: toneR = `he;
+				12'd42: toneR = `he;  12'd43: toneR = `he;
+				12'd44: toneR = `he;  12'd45: toneR = `he;
+				12'd46: toneR = `he;  12'd47: toneR = `he;
+				12'd48: toneR = `hg;  12'd49: toneR = `hg;
+				12'd50: toneR = `hg;  12'd51: toneR = `hg;
+				12'd52: toneR = `hg;  12'd53: toneR = `hg;
+				12'd54: toneR = `hg;  12'd55: toneR = `hg;
+				12'd56: toneR = `hg;  12'd57: toneR = `hg;
+                default: toneR = `sil;
+            endcase
+        end
+		else if(state == WRITING) begin
+            toneR = `sil;
+        end
+		else
+			toneR = `sil;
+    end
+
+    always @(*) begin
+        if(rst) begin
+            toneL = `sil;
+        end
+        else if(state == TYPING) begin
+            case(ibeatNum)
+                // --- Measure 0 ---
+				12'd0: toneL= `le;  12'd1: toneL= `le;
+				12'd2: toneL= `le;  12'd3: toneL= `le;
+				12'd4: toneL= `le;  12'd5: toneL= `le;
+				12'd6: toneL= `le;  12'd7: toneL= `le;
+				12'd8: toneL= `le;  12'd9: toneL= `le;
+				12'd10: toneL= `le;  12'd11: toneL= `le;
+				12'd12: toneL= `le;  12'd13: toneL= `le;
+				12'd14: toneL= `le;  12'd15: toneL= `le;
+				12'd16: toneL= `le;  12'd17: toneL= `le;
+				12'd18: toneL= `le;  12'd19: toneL= `le;
+				12'd20: toneL= `le;  12'd21: toneL= `le;
+				12'd22: toneL= `le;  12'd23: toneL= `le;
+				12'd24: toneL= `le;  12'd25: toneL= `le;
+				12'd26: toneL= `le;  12'd27: toneL= `le;
+				12'd28: toneL= `le;  12'd29: toneL= `le;
+				12'd30: toneL= `le;  12'd31: toneL= `le;
+				12'd32: toneL= `le;  12'd33: toneL= `le;
+				12'd34: toneL= `le;  12'd35: toneL= `le;
+				12'd36: toneL= `le;  12'd37: toneL= `le;
+				12'd38: toneL= `le;  12'd39: toneL= `le;
+				12'd40: toneL= `le;  12'd41: toneL= `le;
+				12'd42: toneL= `le;  12'd43: toneL= `le;
+				12'd44: toneL= `le;  12'd45: toneL= `le;
+				12'd46: toneL= `le;  12'd47: toneL= `le;
+				12'd48: toneL= `la;  12'd49: toneL= `la;
+				12'd50: toneL= `la;  12'd51: toneL= `la;
+				12'd52: toneL= `la;  12'd53: toneL= `la;
+				12'd54: toneL= `la;  12'd55: toneL= `la;
+				12'd56: toneL= `la;  12'd57: toneL= `la;
+                default: toneL= `sil;
+            endcase
+        end
+        else if(state == WRITING) begin
+            toneL = `sil;
+        end
+		else
+			toneL = `sil;
+    end
 endmodule

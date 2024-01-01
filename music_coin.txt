@@ -1,0 +1,12 @@
+12'd0: toneR = `hb;  12'd1: toneR = `hb;
+12'd2: toneR = `hb;  12'd3: toneR = `hb;
+12'd4: toneR = `hb;  12'd5: toneR = `hb;
+12'd6: toneR = `hhe;  12'd7: toneR = `hhe;
+12'd8: toneR = `hhe;  12'd9: toneR = `hhe;
+12'd10: toneR = `hhe;  12'd11: toneR = `hhe;
+12'd12: toneR = `hhe;  12'd13: toneR = `hhe;
+12'd14: toneR = `hhe;  12'd15: toneR = `hhe;
+12'd16: toneR = `hhe;  12'd17: toneR = `hhe;
+12'd18: toneR = `hhe;  12'd19: toneR = `hhe;
+12'd20: toneR = `hhe;  12'd21: toneR = `hhe;
+12'd22: toneR = `hhe;  12'd23: toneR = `hhe;

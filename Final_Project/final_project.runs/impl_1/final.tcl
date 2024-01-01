@@ -61,25 +61,111 @@ proc step_failed { step } {
 }
 
 
-start_step write_bitstream
-set ACTIVE_STEP write_bitstream
+start_step init_design
+set ACTIVE_STEP init_design
 set rc [catch {
-  create_msg_db write_bitstream.pb
+  create_msg_db init_design.pb
   set_param chipscope.maxJobs 2
-  set_param xicom.use_bs_reader 1
-  open_checkpoint final_routed.dcp
-  set_property webtalk.parent_dir C:/Users/Joan/OneDrive/HardwareDesign/HDL_Final/Final_Project/final_project.cache/wt [current_project]
-  catch { write_mem_info -force final.mmi }
-  write_bitstream -force final.bit 
-  catch {write_debug_probes -quiet -force final}
-  catch {file copy -force final.ltx debug_nets.ltx}
-  close_msg_db -file write_bitstream.pb
+  create_project -in_memory -part xc7a35tcpg236-1
+  set_property design_mode GateLvl [current_fileset]
+  set_param project.singleFileAddWarning.threshold 0
+  set_property webtalk.parent_dir C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.cache/wt [current_project]
+  set_property parent.project_path C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.xpr [current_project]
+  set_property ip_repo_paths C:/Users/sunny/Vivado/HDL_Final/Final_Project/ip/Keyboard-Controller [current_project]
+  update_ip_catalog
+  set_property ip_output_repo C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.cache/ip [current_project]
+  set_property ip_cache_permissions {read write} [current_project]
+  add_files -quiet C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1/final.dcp
+  read_ip -quiet C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0.xci
+  read_xdc C:/Users/sunny/Vivado/HDL_Final/Final_Project/Basys3_Constraints.xdc
+  link_design -top final -part xc7a35tcpg236-1
+  close_msg_db -file init_design.pb
 } RESULT]
 if {$rc} {
-  step_failed write_bitstream
+  step_failed init_design
   return -code error $RESULT
 } else {
-  end_step write_bitstream
+  end_step init_design
+  unset ACTIVE_STEP 
+}
+
+start_step opt_design
+set ACTIVE_STEP opt_design
+set rc [catch {
+  create_msg_db opt_design.pb
+  opt_design 
+  write_checkpoint -force final_opt.dcp
+  create_report "impl_1_opt_report_drc_0" "report_drc -file final_drc_opted.rpt -pb final_drc_opted.pb -rpx final_drc_opted.rpx"
+  close_msg_db -file opt_design.pb
+} RESULT]
+if {$rc} {
+  step_failed opt_design
+  return -code error $RESULT
+} else {
+  end_step opt_design
+  unset ACTIVE_STEP 
+}
+
+start_step place_design
+set ACTIVE_STEP place_design
+set rc [catch {
+  create_msg_db place_design.pb
+  if { [llength [get_debug_cores -quiet] ] > 0 }  { 
+    implement_debug_core 
+  } 
+  place_design 
+  write_checkpoint -force final_placed.dcp
+  create_report "impl_1_place_report_io_0" "report_io -file final_io_placed.rpt"
+  create_report "impl_1_place_report_utilization_0" "report_utilization -file final_utilization_placed.rpt -pb final_utilization_placed.pb"
+  create_report "impl_1_place_report_control_sets_0" "report_control_sets -verbose -file final_control_sets_placed.rpt"
+  close_msg_db -file place_design.pb
+} RESULT]
+if {$rc} {
+  step_failed place_design
+  return -code error $RESULT
+} else {
+  end_step place_design
+  unset ACTIVE_STEP 
+}
+
+start_step phys_opt_design
+set ACTIVE_STEP phys_opt_design
+set rc [catch {
+  create_msg_db phys_opt_design.pb
+  phys_opt_design 
+  write_checkpoint -force final_physopt.dcp
+  close_msg_db -file phys_opt_design.pb
+} RESULT]
+if {$rc} {
+  step_failed phys_opt_design
+  return -code error $RESULT
+} else {
+  end_step phys_opt_design
+  unset ACTIVE_STEP 
+}
+
+start_step route_design
+set ACTIVE_STEP route_design
+set rc [catch {
+  create_msg_db route_design.pb
+  route_design 
+  write_checkpoint -force final_routed.dcp
+  create_report "impl_1_route_report_drc_0" "report_drc -file final_drc_routed.rpt -pb final_drc_routed.pb -rpx final_drc_routed.rpx"
+  create_report "impl_1_route_report_methodology_0" "report_methodology -file final_methodology_drc_routed.rpt -pb final_methodology_drc_routed.pb -rpx final_methodology_drc_routed.rpx"
+  create_report "impl_1_route_report_power_0" "report_power -file final_power_routed.rpt -pb final_power_summary_routed.pb -rpx final_power_routed.rpx"
+  create_report "impl_1_route_report_route_status_0" "report_route_status -file final_route_status.rpt -pb final_route_status.pb"
+  create_report "impl_1_route_report_timing_summary_0" "report_timing_summary -max_paths 10 -file final_timing_summary_routed.rpt -pb final_timing_summary_routed.pb -rpx final_timing_summary_routed.rpx -warn_on_violation "
+  create_report "impl_1_route_report_incremental_reuse_0" "report_incremental_reuse -file final_incremental_reuse_routed.rpt"
+  create_report "impl_1_route_report_clock_utilization_0" "report_clock_utilization -file final_clock_utilization_routed.rpt"
+  create_report "impl_1_route_report_bus_skew_0" "report_bus_skew -warn_on_violation -file final_bus_skew_routed.rpt -pb final_bus_skew_routed.pb -rpx final_bus_skew_routed.rpx"
+  close_msg_db -file route_design.pb
+} RESULT]
+if {$rc} {
+  write_checkpoint -force final_routed_error.dcp
+  step_failed route_design
+  return -code error $RESULT
+} else {
+  end_step route_design
   unset ACTIVE_STEP 
 }
 

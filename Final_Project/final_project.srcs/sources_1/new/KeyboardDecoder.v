@@ -1,5 +1,5 @@
 module KeyboardDecoder(
-	output reg [511:0] key_down,
+	output reg [125:0] key_down,
 	output wire [8:0] last_change,
 	output reg key_valid,
 	inout wire PS2_DATA,
@@ -27,7 +27,7 @@ module KeyboardDecoder(
     wire valid;
     wire err;
     
-    wire [511:0] key_decode = 1 << last_change;
+    wire [125:0] key_decode = 1 << last_change;
     assign last_change = {key[9], key[7:0]};
     
     KeyboardCtrl_0 inst (
@@ -109,7 +109,7 @@ module KeyboardDecoder(
     always @ (posedge clk, posedge rst) begin
     	if (rst) begin
     		key_valid <= 1'b0;
-    		key_down <= 511'b0;
+    		key_down <= 126'b0;
     	end else if (key_decode[last_change] && pulse_been_ready) begin
     		key_valid <= 1'b1;
     		if (key[8] == 0) begin
