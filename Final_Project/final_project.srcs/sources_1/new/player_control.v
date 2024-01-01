@@ -1,8 +1,9 @@
 module player_control (
 	input clk, 
 	input reset, 
-	input state, 
-	output reg [11:0] ibeat
+	input [1:0] state, 
+	output reg [11:0] ibeat1,
+    output reg [11:0] ibeat2
 );
 	// state
 	parameter IDLE = 2'b00;
@@ -17,15 +18,13 @@ module player_control (
 
 	always @(posedge clk, posedge reset) begin
 		if (reset) begin
-			ibeat <= 0;
-		end else begin
-			if(state == TYPING)
-				ibeat <= next_ibeat1;
-			else if(state == WRITING)
-				ibeat <= next_ibeat2;
-            else
-				ibeat <= 0;
-		end
+			ibeat1 <= 0;
+            ibeat2 <= 0;
+		end 
+        else begin
+            ibeat1 <= next_ibeat1;
+            ibeat2 <= next_ibeat2;
+        end
 	end
 
     always @* begin
@@ -35,11 +34,11 @@ module player_control (
 		end
 		else begin
 			if(state == TYPING) begin
-				next_ibeat1 = (ibeat + 1 < LEN_start) ? (ibeat + 1) : LEN_start;
+				next_ibeat1 = (ibeat1 + 2 < LEN_start) ? (ibeat1 + 2) : LEN_start;
 				next_ibeat2 = 0;
 			end
 			else if(state == WRITING) begin
-				next_ibeat2 = (ibeat + 1 < LEN_end) ? (ibeat + 1) : LEN_end;
+				next_ibeat2 = (ibeat2 + 1 < LEN_end) ? (ibeat2 + 1) : LEN_end;
 				next_ibeat1 = 0;
 			end
 			else begin

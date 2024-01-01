@@ -72,6 +72,7 @@ clock_divider #(14) div1(.clk(clk), .clk_div(clk_used));
 reg finish_writing;
 // Audio
 wire [15:0] audio_in_left, audio_in_right;
+wire [11:0] ibeat1, ibeat2;
 wire [11:0] ibeatNum;               // Beat counter
 wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
@@ -80,6 +81,8 @@ wire clk_div22;
 clock_divider #(.n(22)) clock_22(.clk(clk), .clk_div(clk_div22));
 assign freq_outL = 50000000 / freqL;
 assign freq_outR = 50000000 / freqR;
+assign ibeatNum = (state == TYPING) ? ibeat1 :
+				(state == WRITING) ? ibeat2 : 0;
 
 KeyboardDecoder kbd(
 	.key_down(key_down),
@@ -95,7 +98,8 @@ player_control playerCtrl_00 (
 	.clk(clk_div22),
 	.reset(rst),
 	.state(state),
-	.ibeat(ibeatNum)
+	.ibeat1(ibeat1),
+	.ibeat2(ibeat2)
 );
 
 speaker_control sc(
@@ -447,7 +451,7 @@ module music (
 				12'd56: toneR = `hg;  12'd57: toneR = `hg;
 				12'd58: toneR = `hg;  12'd59: toneR = `hg;
 				// Coin
-				12'd60: toneR = `hb;  12'd61: toneR = `hb;
+				12'd60: toneR = `sil;  12'd61: toneR = `hb;
 				12'd62: toneR = `hb;  12'd63: toneR = `hb;
 				12'd64: toneR = `hb;  12'd65: toneR = `hb;
 				12'd66: toneR = `hhe;  12'd67: toneR = `hhe;
@@ -561,6 +565,7 @@ module music (
 				12'd186: toneR = `hhc;  12'd187: toneR = `hhc;
 				12'd188: toneR = `hhc;  12'd189: toneR = `hhc;
 				12'd190: toneR = `hhc;  12'd191: toneR = `hhc;
+				default: toneR = `sil;
 			endcase
         end
 		else
@@ -605,7 +610,7 @@ module music (
 				12'd56: toneL= `la;  12'd57: toneL= `la;
 				12'd58: toneL = `la;  12'd59: toneL = `la;
 				// Coin
-				12'd60: toneL = `hb;  12'd61: toneL = `hb;
+				12'd60: toneL = `sil;  12'd61: toneL = `hb;
 				12'd62: toneL = `hb;  12'd63: toneL = `hb;
 				12'd64: toneL = `hb;  12'd65: toneL = `hb;
 				12'd66: toneL = `hhe;  12'd67: toneL = `hhe;
@@ -719,6 +724,7 @@ module music (
 				12'd186: toneL = `c;  12'd187: toneL = `c;
 				12'd188: toneL = `c;  12'd189: toneL = `c;
 				12'd190: toneL = `c;  12'd191: toneL = `c;
+				default: toneL = `sil;
 			endcase
         end
 		else
