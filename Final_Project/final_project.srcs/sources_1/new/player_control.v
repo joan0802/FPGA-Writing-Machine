@@ -2,6 +2,10 @@ module player_control (
 	input clk, 
 	input reset, 
 	input [1:0] state, 
+	input [125:0] key_down,
+	input isPressed,
+	input [8:0] last_change,
+	input key_valid,
 	output reg [11:0] ibeat1,
     output reg [11:0] ibeat2
 );
@@ -12,6 +16,7 @@ module player_control (
 
 	parameter LEN_start = 60;
 	parameter LEN_end = 192;
+	parameter coin_end = 84;
     
 	reg [11:0] next_ibeat1, next_ibeat2;
 	// assign ibeat = (state == TYPING) ? next_ibeat1 : next_ibeat2;
@@ -22,7 +27,10 @@ module player_control (
             ibeat2 <= 0;
 		end 
         else begin
-            ibeat1 <= next_ibeat1;
+			if((key_valid == 1'b1 && key_down[last_change] == 1'b1 && (isPressed == 1'b0)))
+				ibeat1 <= 61;
+			else
+            	ibeat1 <= next_ibeat1;
             ibeat2 <= next_ibeat2;
         end
 	end
@@ -34,7 +42,12 @@ module player_control (
 		end
 		else begin
 			if(state == TYPING) begin
-				next_ibeat1 = (ibeat1 + 2 < LEN_start) ? (ibeat1 + 2) : LEN_start;
+				if(ibeat1 > 60) begin	
+					next_ibeat1 = 0;
+					// next_ibeat1 = (ibeat1 + 1 < coin_end) ? (ibeat1 + 1) : coin_end;
+				end
+				else
+					next_ibeat1 = (ibeat1 + 2 < LEN_start) ? (ibeat1 + 2) : LEN_start;
 				next_ibeat2 = 0;
 			end
 			else if(state == WRITING) begin

@@ -99,7 +99,11 @@ player_control playerCtrl_00 (
 	.reset(rst),
 	.state(state),
 	.ibeat1(ibeat1),
-	.ibeat2(ibeat2)
+	.ibeat2(ibeat2),
+	.isPressed(isPressed),
+	.key_down(key_down),
+	.last_change(last_change),
+	.key_valid(key_valid)
 );
 
 speaker_control sc(
