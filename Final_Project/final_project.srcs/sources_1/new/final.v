@@ -37,7 +37,9 @@ module final(
     input wire rst,
     input wire btnL,
     input wire btnR,
-	input wire SW0,
+	input wire SW0, // claw
+	input wire SW1,	// left-right
+	input wire SW2, // bottom
     inout wire PS2_DATA,
     inout wire PS2_CLK,
     output reg [15:0] LED,
@@ -81,6 +83,8 @@ wire [7:0] ibeatNum;               // Beat counter
 wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
 wire clk_div22;
+// Servo
+reg claw, left_right, bottom;
 
 clock_divider #(.n(22)) clock_22(.clk(clk), .clk_div(clk_div22));
 assign freq_outL = 50000000 / freqL;
@@ -139,16 +143,32 @@ music music_00 (
 	.toneR(freqR)
 );
 
-servo servo_00 (
-	.clk(clk),
+Servo_interface servo_claw (
+	.sw(!SW0),
 	.rst(rst),
-	.SW0(SW0),
-	.mode(state),
-	// .pwm({pwm_left, pwm_right, pwm_claw, pwm_bottom}),
-	.l_IN(pwm_left),
-	.r_IN(pwm_right),
-	.claw_IN(pwm_claw),
-	.b_IN(pwm_bottom)
+	.clk(clk),
+	.PWM(pwm_claw)
+);
+
+Servo_interface servo_left (
+	.sw(SW1),
+	.rst(rst),
+	.clk(clk),
+	.PWM(pwm_left)
+);
+
+Servo_interface servo_right (
+	.sw(SW1),
+	.rst(rst),
+	.clk(clk),
+	.PWM(pwm_right)
+);
+
+Servo_interface servo_bottom (
+	.sw(SW2),
+	.rst(rst),
+	.clk(clk),
+	.PWM(pwm_bottom)
 );
 
 parameter [8:0] KEY_CODES [0:21] = {
