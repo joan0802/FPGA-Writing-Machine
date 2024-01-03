@@ -38,8 +38,9 @@ module final(
     input wire btnL,
     input wire btnR,
 	input wire SW0, // claw
-	input wire SW1,	// left-right
-	input wire SW2, // bottom
+	input wire SW1,	// left
+	input wire SW2, // right
+	input wire SW3, // bottom
     inout wire PS2_DATA,
     inout wire PS2_CLK,
     output reg [15:0] LED,
@@ -49,7 +50,7 @@ module final(
     output audio_sdin, // serial audio data input
 	output pwm_left,
 	output pwm_right,
-	output pwm_bottom,
+	// output pwm_bottom,
 	output pwm_claw,
     output reg [3:0] digit,
     output reg [6:0] display
@@ -147,6 +148,7 @@ Servo_interface servo_claw (
 	.sw(!SW0),
 	.rst(rst),
 	.clk(clk),
+	.direction(1),
 	.PWM(pwm_claw)
 );
 
@@ -154,22 +156,24 @@ Servo_interface servo_left (
 	.sw(SW1),
 	.rst(rst),
 	.clk(clk),
+	.direction(0),
 	.PWM(pwm_left)
 );
 
 Servo_interface servo_right (
-	.sw(SW1),
-	.rst(rst),
-	.clk(clk),
-	.PWM(pwm_right)
-);
-
-Servo_interface servo_bottom (
 	.sw(SW2),
 	.rst(rst),
 	.clk(clk),
-	.PWM(pwm_bottom)
+	.direction(1),
+	.PWM(pwm_right)
 );
+
+// Servo_interface servo_bottom (
+// 	.sw(SW3),
+// 	.rst(rst),
+// 	.clk(clk),
+// 	.PWM(pwm_bottom)
+// );
 
 parameter [8:0] KEY_CODES [0:21] = {
 	9'b0_0100_0101,	// 0 => 45
@@ -247,6 +251,12 @@ always @* begin
 
 		if(SW0) next_led[0] = 1'b1;
 		else next_led[0] = 1'b0;
+		if(SW1) next_led[1] = 1'b1;
+		else next_led[1] = 1'b0;
+		if(SW2) next_led[2] = 1'b1;
+		else next_led[2] = 1'b0;
+		// if(SW3) next_led[3] = 1'b1;
+		// else next_led[3] = 1'b0;
 	end
 end
 

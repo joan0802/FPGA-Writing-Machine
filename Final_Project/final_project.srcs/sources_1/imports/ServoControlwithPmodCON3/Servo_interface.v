@@ -1,38 +1,16 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: Digilent
-// Engineer: Kaitlyn Franz
-// 
-// Create Date: 01/31/2016 03:04:42 PM
-// Design Name: ServoControlwithPmodCON3
-// Module Name: Servo_interface
-// Project Name: The Claw
-// Target Devices: Basys 3 with PmodCON3
-// Tool Versions: 2015.4
-// Description: 
-//      This module creates the PWM signal needed to drive
-//      one servo using the PmodCON3. To use the other 3 servo connectors,
-//      you can instantiate this module 4 times, or send the same PWM sigal to 
-//      four Pmod connector pins. This depends on whether you want the same servo signal, 
-//      or different servo signals. 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 module Servo_interface (
     input sw,
     input rst,
     input clk,
+    input direction,
     output PWM
     );
     
     wire [19:0] A_net;
     wire [19:0] value_net;
-    wire [8:0] angle_net;
+    wire [6:0] angle_net;
 
     // Convert the switch value to an angle value.
     sw_to_angle convert(
@@ -43,6 +21,7 @@ module Servo_interface (
     // Convert the angle value to 
     // the constant value needed for the PWM.
     angle_decoder decode(
+        .direction(direction),
         .angle(angle_net),
         .value(value_net)
         );
@@ -67,13 +46,13 @@ module Servo_interface (
 endmodule
 
 module angle_decoder(
-    input [8:0] angle,
-    output reg [19:0] value
+    input [6:0] angle,
+    input direction,
+    output reg [17:0] value
     );
     
     // Run when angle changes
-    always @ (angle)
-    begin
+    always @ (angle)begin
         // The angle gets converted to the 
         // constant value. This equation
         // depends on the servo motor you are 
@@ -81,7 +60,10 @@ module angle_decoder(
         // trial and error to get the 0
         // and 360 values and created an equation
         // based on those two points. 
-        value = 16'd60000 - (10'd300)*(angle);
+        // value = 16'd60000 - (10'd300)*(angle);
+        if(direction) value = (10'd944)*(angle)+ 16'd60000;
+        else value = 16'd60000 - (10'd300)*(angle);
+        // value = (10'd944)*(angle)+ 16'd60000;
     end
 endmodule
 
@@ -139,14 +121,14 @@ endmodule
 
 module sw_to_angle(
     input sw,
-    output reg [8:0] angle
+    output reg [6:0] angle
     );
     
     // Run when the value of the switches
     // changes
     always @ (sw)
     begin
-        if(sw == 1'b0) angle = 9'd0;
-        else angle = 9'd120;
+        if(sw == 1'b0) angle = 7'd0;
+        else angle = 7'd120;
     end
 endmodule
