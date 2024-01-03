@@ -1,13 +1,13 @@
 module player_control (
 	input clk, 
 	input reset, 
-	input [1:0] state, 
-	input [125:0] key_down,
+	input [2:0] state, 
+	input [90:0] key_down,
 	input isPressed,
 	input [8:0] last_change,
 	input key_valid,
-	output reg [11:0] ibeat1,
-    output reg [11:0] ibeat2
+	output reg [7:0] ibeat1,
+    output reg [7:0] ibeat2
 );
 	// state
 	parameter IDLE = 2'b00;
