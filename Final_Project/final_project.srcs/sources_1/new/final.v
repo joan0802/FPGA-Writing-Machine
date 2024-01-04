@@ -148,7 +148,7 @@ Servo_interface servo_claw (
 	.sw(!SW0),
 	.rst(rst),
 	.clk(clk),
-	.direction(1),
+	.direction(1'b1),
 	.PWM(pwm_claw)
 );
 
@@ -156,7 +156,7 @@ Servo_interface servo_left (
 	.sw(SW1),
 	.rst(rst),
 	.clk(clk),
-	.direction(0),
+	.direction(1'b0),
 	.PWM(pwm_left)
 );
 
@@ -164,7 +164,7 @@ Servo_interface servo_right (
 	.sw(SW2),
 	.rst(rst),
 	.clk(clk),
-	.direction(1),
+	.direction(1'b1),
 	.PWM(pwm_right)
 );
 

@@ -8,8 +8,8 @@ module Servo_interface (
     output PWM
     );
     
-    wire [19:0] A_net;
-    wire [19:0] value_net;
+    wire [17:0] A_net;
+    wire [17:0] value_net;
     wire [6:0] angle_net;
 
     // Convert the switch value to an angle value.
@@ -52,7 +52,7 @@ module angle_decoder(
     );
     
     // Run when angle changes
-    always @ (angle)begin
+    always @ (angle, direction)begin
         // The angle gets converted to the 
         // constant value. This equation
         // depends on the servo motor you are 
@@ -61,8 +61,10 @@ module angle_decoder(
         // and 360 values and created an equation
         // based on those two points. 
         // value = 16'd60000 - (10'd300)*(angle);
-        if(direction) value = (10'd944)*(angle)+ 16'd60000;
-        else value = 16'd60000 - (10'd300)*(angle);
+        if(direction == 1'b1) 
+            value = (10'd944)*(angle)+ 16'd60000;
+        else 
+            value = 16'd60000 - (10'd150)*(angle);
         // value = (10'd944)*(angle)+ 16'd60000;
     end
 endmodule
