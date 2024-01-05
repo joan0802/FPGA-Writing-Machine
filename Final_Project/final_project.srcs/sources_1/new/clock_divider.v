@@ -2,6 +2,7 @@ module clock_divider #(
     parameter n = 27
 )(
     input wire  clk,
+    input en,
     output wire clk_div  
 );
 
@@ -9,7 +10,10 @@ module clock_divider #(
     wire [n-1:0] next_num;
 
     always @(posedge clk) begin
-        num <= next_num;
+        if(en)
+            num <= next_num;
+        else
+            num <= 0;
     end
 
     assign next_num = num + 1;

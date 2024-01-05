@@ -134,8 +134,8 @@ set_property PACKAGE_PIN L2 [get_ports {pwm_left}]
 set_property PACKAGE_PIN J2 [get_ports {pwm_right}]
    set_property IOSTANDARD LVCMOS33 [get_ports {pwm_right}]
 # Sch name = JA4
-# set_property PACKAGE_PIN G2 [get_ports {pwm_bottom}]
-#    set_property IOSTANDARD LVCMOS33 [get_ports {pwm_bottom}]
+set_property PACKAGE_PIN G2 [get_ports {pwm_bottom}]
+   set_property IOSTANDARD LVCMOS33 [get_ports {pwm_bottom}]
 ## Sch name = JA7
 # set_property PACKAGE_PIN H1 [get_ports {JA[4]}]
 #    set_property IOSTANDARD LVCMOS33 [get_ports {JA[4]}]

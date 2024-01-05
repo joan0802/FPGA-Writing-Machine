@@ -50,7 +50,7 @@ module final(
     output audio_sdin, // serial audio data input
 	output pwm_left,
 	output pwm_right,
-	// output pwm_bottom,
+	output pwm_bottom,
 	output pwm_claw,
     output reg [3:0] digit,
     output reg [6:0] display
@@ -74,7 +74,7 @@ reg[15:0] num, next_num;
 reg [3:0] BCD0, BCD1, BCD2, BCD3;
 reg [3:0] value;
 wire clk_used;
-clock_divider #(14) div1(.clk(clk), .clk_div(clk_used));
+clock_divider #(14) div1(.clk(clk), .en(1), .clk_div(clk_used));
 // Writing
 reg finish_writing;
 // Audio
@@ -85,9 +85,9 @@ wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
 wire clk_div22;
 // Servo
-reg claw, left_right, bottom;
+// reg claw, left_right, bottom;
 
-clock_divider #(.n(22)) clock_22(.clk(clk), .clk_div(clk_div22));
+clock_divider #(.n(22)) clock_22(.clk(clk), .en(1), .clk_div(clk_div22));
 assign freq_outL = 50000000 / freqL;
 assign freq_outR = 50000000 / freqR;
 assign ibeatNum = (state == TYPING) ? ibeat1 :
@@ -145,33 +145,50 @@ music music_00 (
 );
 
 Servo_interface servo_claw (
-	.sw(!SW0),
+	.sw({SW3, SW2, SW1, SW0}),
 	.rst(rst),
 	.clk(clk),
 	.direction(1'b1),
-	.PWM(pwm_claw)
+	.en(state == WRITING),
+	.num(num),
+	.pwm_claw(pwm_claw),
+	.pwm_left(pwm_left),
+	.pwm_right(pwm_right),
+	.pwm_bottom(pwm_bottom)
 );
 
-Servo_interface servo_left (
-	.sw(SW1),
-	.rst(rst),
-	.clk(clk),
-	.direction(1'b0),
-	.PWM(pwm_left)
-);
-
-Servo_interface servo_right (
-	.sw(SW2),
-	.rst(rst),
-	.clk(clk),
-	.direction(1'b1),
-	.PWM(pwm_right)
-);
-
-// Servo_interface servo_bottom (
-// 	.sw(SW3),
+// Servo_interface servo_claw (
+// 	.sw(!SW0),
 // 	.rst(rst),
 // 	.clk(clk),
+// 	.direction(1'b1),
+// 	.num(num),
+// 	.PWM(pwm_claw)
+// );
+
+// Servo_interface servo_left ( // clockwise
+// 	.sw(!SW1),
+// 	.rst(rst),
+// 	.clk(clk),
+// 	.direction(1'b1),
+// 	.num(num),
+// 	.PWM(pwm_left)
+// );
+
+// Servo_interface servo_right ( // counterclockwise
+// 	.sw(SW2),
+// 	.rst(rst),
+// 	.clk(clk),
+// 	.direction(1'b1),
+// 	.num(num),
+// 	.PWM(pwm_right)
+// );
+
+// Servo_interface servo_bottom (
+// 	.sw(!SW3),
+// 	.rst(rst),
+// 	.clk(clk),
+// 	.direction(1'b1),
 // 	.PWM(pwm_bottom)
 // );
 
@@ -255,8 +272,8 @@ always @* begin
 		else next_led[1] = 1'b0;
 		if(SW2) next_led[2] = 1'b1;
 		else next_led[2] = 1'b0;
-		// if(SW3) next_led[3] = 1'b1;
-		// else next_led[3] = 1'b0;
+		if(SW3) next_led[3] = 1'b1;
+		else next_led[3] = 1'b0;
 	end
 end
 
