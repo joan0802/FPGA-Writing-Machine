@@ -75,7 +75,7 @@ reg [3:0] value;
 wire clk_used;
 clock_divider #(14) div1(.clk(clk), .en(1), .clk_div(clk_used));
 // Writing
-reg finish_writing;
+wire finish_writing;
 // Audio
 wire [15:0] audio_in_left, audio_in_right;
 wire [7:0] ibeat1, ibeat2;
@@ -151,6 +151,7 @@ Servo_interface servo_claw (
 	.pwm_left(pwm_left),
 	.pwm_right(pwm_right),
 	.pwm_bottom(pwm_bottom),
+	.finish_writing(finish_writing),
 	.index(index)
 );
 
@@ -228,19 +229,19 @@ always @* begin
 end
 
 // Write
-always @* begin
-	if(rst) begin
-		finish_writing = 1'b0;
-	end
-	else begin
-		finish_writing = 1'b0;
-		if(state == WRITING) begin
-			if(btnL == 1'b1) begin
-				finish_writing = 1'b1;
-			end
-		end
-	end
-end
+// always @* begin
+// 	if(rst) begin
+// 		finish_writing = 1'b0;
+// 	end
+// 	else begin
+// 		finish_writing = 1'b0;
+// 		if(state == WRITING) begin
+// 			if(btnL == 1'b1) begin
+// 				finish_writing = 1'b1;
+// 			end
+// 		end
+// 	end
+// end
 // num
 always @(posedge clk_used, posedge rst) begin
 	if(rst) begin

@@ -10,11 +10,15 @@ module Servo_interface (
     output reg pwm_left,
     output reg pwm_right,
     output reg pwm_bottom,
-    output [2:0] index
+    output [2:0] index,
+    output reg finish_writing
 );
     wire [19:0] count_max;
     wire [19:0] value_claw, value_left, value_right, value_bottom;
     wire [6:0] angle_claw, angle_left, angle_right, angle_bottom;
+    reg [3:0] cur_num;
+    wire isWriting;
+    wire clk_write;
 
 
     // Convert the switch value to an angle value.
@@ -24,12 +28,20 @@ module Servo_interface (
         .angle_left(angle_left),
         .angle_right(angle_right),
         .angle_bottom(angle_bottom),
-        .num(num[3:0]),
+        .num(cur_num),
         .en(en),
+        .isWriting(isWriting),
         .clk(clk),
+        .clk_write(clk_write),
         .index(index),
         .rst(rst)
         );
+
+    clock_divider #(27) divider(
+        .clk(clk),
+        .en(en),
+        .clk_div(clk_write)
+    );
     
     // Convert the angle value to 
     // the constant value needed for the PWM.
@@ -41,6 +53,40 @@ module Servo_interface (
     // Compare the count value from the
     // counter, with the constant value set by
     // the switches.
+
+    always @(posedge clk_write, posedge rst) begin
+        if(rst) begin
+            cur_num <= 4'd10;
+            finish_writing <= 1'b0;
+        end
+        else begin
+            if(isWriting == 1'b1) begin
+                if(cur_num == 4'd10)
+                    cur_num <= num[3:0];
+                else
+                    cur_num <= cur_num;
+                finish_writing <= 1'b0;
+            end
+            else begin
+                if(cur_num == num[3:0] && num[7:4] != 4'd10) begin
+                    cur_num <= num[7:4];
+                    finish_writing <= 1'b0;
+                end
+                else if(cur_num == num[7:4] && num[11:8] != 4'd10) begin
+                    cur_num <= num[11:8];
+                    finish_writing <= 1'b0;
+                end
+                else if(cur_num == num[11:8] && num[15:12] != 4'd10) begin
+                    cur_num <= num[15:12];
+                    finish_writing <= 1'b0;
+                end
+                else begin
+                    cur_num <= cur_num;
+                    finish_writing <= 1'b1;
+                end
+            end
+        end
+    end
 
     always @(posedge clk, posedge rst) begin
         if(rst) begin
@@ -126,11 +172,13 @@ module sw_to_angle(
     input [3:0] num,
     input rst,
     input clk,
+    input clk_write,
     output reg [6:0] angle_claw,
     output reg [6:0] angle_left,
     output reg [6:0] angle_right,
     output reg [6:0] angle_bottom,
-    output reg [2:0] index
+    output reg [2:0] index,
+    output reg isWriting
     );
 
     parameter LEFT = 9'b11_0000101;
@@ -145,13 +193,7 @@ module sw_to_angle(
     
 
     reg [8:0] cur_angle_lr, cur_angle_fb;
-    wire clk_write;
 
-    clock_divider #(27) divider(
-        .clk(clk),
-        .en(en),
-        .clk_div(clk_write)
-    );
     parameter [8:0] ZERO_lr [0:4] = { //後 前 左 後 右
         IDLE, IDLE, LEFT, LEFT, RIGHT
     };
@@ -243,53 +285,121 @@ module sw_to_angle(
         endcase
     end
     always @(posedge clk_write, posedge rst) begin
-        if(rst)
+        if(rst) begin
             index <= 3'd0;
+            isWriting <= 1'b1;
+        end
         else begin
             case(num) 
                 4'd0: begin
-                    if(index == 3'd4) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd4) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd1: begin
-                    if(index == 3'd2) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd2) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end 
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd2: begin
-                    if(index == 3'd6) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd6) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd3: begin
-                    if(index == 3'd7) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd7) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd4: begin
-                    if(index == 3'd6) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd6) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd5: begin
-                    if(index == 3'd6) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd6) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd6: begin
-                    if(index == 3'd5) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd5)  begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd7: begin
-                    if(index == 3'd4) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd4) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd8: begin
-                    if(index == 3'd7) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd7) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 4'd9: begin
-                    if(index == 3'd7) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd7) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
                 default: begin
-                    if(index == 3'd2) index <= 3'd0;
-                    else index <= index + 1'b1;
+                    if(index == 3'd4) begin
+                        index <= 3'd0;
+                        isWriting <= 1'b0;
+                    end
+                    else begin
+                        index <= index + 1'b1;
+                        isWriting <= 1'b1;
+                    end
                 end
             endcase
         end
@@ -314,6 +424,9 @@ module sw_to_angle(
 
             if(cur_angle_fb[8:7] == 2'b00)
                 angle_left = 7'b0;
+            else if(isWriting == 1'b0) begin
+                angle_left = 7'b0000101;
+            end
             else if(cur_angle_fb[8:7] == 2'b10 && cur_angle_fb[6:0] == 7'b0001100)
                 angle_left = 7'b0000011;
             else
