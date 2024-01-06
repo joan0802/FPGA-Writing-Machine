@@ -62,7 +62,7 @@ parameter [1:0] TYPING = 2'b01;
 parameter [1:0] WRITING = 2'b10;
 reg [1:0] state, next_state;
 // KEYBOARD
-wire [90:0] key_down;
+wire [100:0] key_down;
 wire [8:0] last_change;
 wire key_valid;
 reg [3:0] key_num;

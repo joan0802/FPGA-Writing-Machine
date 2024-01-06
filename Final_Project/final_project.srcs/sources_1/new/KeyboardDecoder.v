@@ -1,5 +1,5 @@
 module KeyboardDecoder(
-	output reg [90:0] key_down,
+	output reg [100:0] key_down,
 	output wire [8:0] last_change,
 	output reg key_valid,
 	inout wire PS2_DATA,
@@ -27,7 +27,7 @@ module KeyboardDecoder(
     wire valid;
     wire err;
     
-    wire [90:0] key_decode = 1 << last_change;
+    wire [100:0] key_decode = 1 << last_change;
     assign last_change = {key[9], key[7:0]};
     
     KeyboardCtrl_0 inst (
