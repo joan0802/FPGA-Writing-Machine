@@ -1,36 +1,36 @@
-`define lc  32'd131   // C3
-`define ld  32'd147   // D3
-`define lbe 32'd156
-`define le  32'd165   // E3
-`define lf  32'd174   // F3
-`define lg  32'd196   // G3
-`define lba 32'd208
-`define la  32'd220   // A3
-`define lb  32'd247   // B3
-`define lbb 32'd233
-`define c   32'd262   // C4
-`define d   32'd294   // D4
-`define be  32'd311
-`define e   32'd330   // E4
-`define f   32'd349   // F4
-`define g   32'd392   // G4
-`define ba  32'd415
-`define a   32'd440   // A4
-`define bb  32'd466
-`define b   32'd494   // B4
-`define hc  32'd523   // C5
-`define hd  32'd587   // D5
-`define hbe 32'd622 
-`define he  32'd659   // E5
-`define hf  32'd698   // F5
-`define hg  32'd784   // G5 
-`define hba 32'd831 
-`define ha  32'd880   // A5
-`define hbb 32'd932
-`define hb  32'd988   // B5
-`define hhc 32'd1047
-`define hhe 32'd1319
-`define sil   32'd50000000 // slience
+`define lc  26'd131   // C3
+`define ld  26'd147   // D3
+`define lbe 26'd156
+`define le  26'd165   // E3
+`define lf  26'd174   // F3
+`define lg  26'd196   // G3
+`define lba 26'd208
+`define la  26'd220   // A3
+`define lb  26'd247   // B3
+`define lbb 26'd233
+`define c   26'd262   // C4
+`define d   26'd294   // D4
+`define be  26'd311
+`define e   26'd330   // E4
+`define f   26'd349   // F4
+`define g   26'd392   // G4
+`define ba  26'd415
+`define a   26'd440   // A4
+`define bb  26'd466
+`define b   26'd494   // B4
+`define hc  26'd523   // C5
+`define hd  26'd587   // D5
+`define hbe 26'd622 
+`define he  26'd659   // E5
+`define hf  26'd698   // F5
+`define hg  26'd784   // G5 
+`define hba 26'd831 
+`define ha  26'd880   // A5
+`define hbb 26'd932
+`define hb  26'd988   // B5
+`define hhc 26'd1047
+`define hhe 26'd1319
+`define sil   26'd50000000 // slience
 
 module final(
     input wire clk,
@@ -64,7 +64,6 @@ reg [2:0] state, next_state;
 // KEYBOARD
 wire [90:0] key_down;
 wire [8:0] last_change;
-reg [8:0] pre_last_change, next_pre_last_change;
 wire key_valid;
 reg [3:0] key_num;
 reg isPressed, next_isPressed;
@@ -81,7 +80,7 @@ reg finish_writing;
 wire [15:0] audio_in_left, audio_in_right;
 wire [7:0] ibeat1, ibeat2;
 wire [7:0] ibeatNum;               // Beat counter
-wire [31:0] freqL, freqR;           // Raw frequency, produced by music module
+wire [25:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
 wire clk_div22;
 // Servo
@@ -110,11 +109,7 @@ player_control playerCtrl_00 (
 	.reset(rst),
 	.state(state),
 	.ibeat1(ibeat1),
-	.ibeat2(ibeat2),
-	.isPressed(isPressed),
-	.key_down(key_down),
-	.last_change(last_change),
-	.key_valid(key_valid)
+	.ibeat2(ibeat2)
 );
 
 speaker_control sc(
@@ -160,7 +155,7 @@ Servo_interface servo_claw (
 	.index(index)
 );
 
-parameter [8:0] KEY_CODES [0:21] = {
+parameter [8:0] KEY_CODES [0:9] = {
 	9'b0_0100_0101,	// 0 => 45
 	9'b0_0001_0110,	// 1 => 16
 	9'b0_0001_1110,	// 2 => 1E
@@ -170,20 +165,7 @@ parameter [8:0] KEY_CODES [0:21] = {
 	9'b0_0011_0110,	// 6 => 36
 	9'b0_0011_1101,	// 7 => 3D
 	9'b0_0011_1110,	// 8 => 3E
-	9'b0_0100_0110,	// 9 => 46
-	
-	9'b0_0111_0000, // right_0 => 70
-	9'b0_0110_1001, // right_1 => 69
-	9'b0_0111_0010, // right_2 => 72
-	9'b0_0111_1010, // right_3 => 7A
-	9'b0_0110_1011, // right_4 => 6B
-	9'b0_0111_0011, // right_5 => 73
-	9'b0_0111_0100, // right_6 => 74
-	9'b0_0110_1100, // right_7 => 6C
-	9'b0_0111_0101, // right_8 => 75
-	9'b0_0111_1101, // right_9 => 7D
-    9'b0_0110_0110, // BACK
-    9'b0_0101_1010  // ENTER
+	9'b0_0100_0110	// 9 => 46
 };
 // state transition
 always @* begin
@@ -441,8 +423,8 @@ module music (
     input rst,
     input clk,
     input [2:0] state,
-	output reg [31:0] toneL,
-    output reg [31:0] toneR
+	output reg [25:0] toneL,
+    output reg [25:0] toneR
 );
 	// state
 	parameter [1:0] IDLE = 2'b00;
@@ -487,18 +469,18 @@ module music (
 				8'd56: toneR = `hg;  8'd57: toneR = `hg;
 				8'd58: toneR = `hg;  8'd59: toneR = `hg;
 				// Coin
-				8'd60: toneR = `sil;  8'd61: toneR = `hb;
-				8'd62: toneR = `hb;  8'd63: toneR = `hb;
-				8'd64: toneR = `hb;  8'd65: toneR = `hb;
-				8'd66: toneR = `hhe;  8'd67: toneR = `hhe;
-				8'd68: toneR = `hhe;  8'd69: toneR = `hhe;
-				8'd70: toneR = `hhe;  8'd71: toneR = `hhe;
-				8'd72: toneR = `hhe;  8'd73: toneR = `hhe;
-				8'd74: toneR = `hhe;  8'd75: toneR = `hhe;
-				8'd76: toneR = `hhe;  8'd77: toneR = `hhe;
-				8'd78: toneR = `hhe;  8'd79: toneR = `hhe;
-				8'd80: toneR = `hhe;  8'd81: toneR = `hhe;
-				8'd82: toneR = `hhe;  8'd83: toneR = `hhe;
+				// 8'd60: toneR = `sil;  8'd61: toneR = `hb;
+				// 8'd62: toneR = `hb;  8'd63: toneR = `hb;
+				// 8'd64: toneR = `hb;  8'd65: toneR = `hb;
+				// 8'd66: toneR = `hhe;  8'd67: toneR = `hhe;
+				// 8'd68: toneR = `hhe;  8'd69: toneR = `hhe;
+				// 8'd70: toneR = `hhe;  8'd71: toneR = `hhe;
+				// 8'd72: toneR = `hhe;  8'd73: toneR = `hhe;
+				// 8'd74: toneR = `hhe;  8'd75: toneR = `hhe;
+				// 8'd76: toneR = `hhe;  8'd77: toneR = `hhe;
+				// 8'd78: toneR = `hhe;  8'd79: toneR = `hhe;
+				// 8'd80: toneR = `hhe;  8'd81: toneR = `hhe;
+				// 8'd82: toneR = `hhe;  8'd83: toneR = `hhe;
                 default: toneR = `sil;
             endcase
         end
@@ -646,18 +628,18 @@ module music (
 				8'd56: toneL= `la;  8'd57: toneL= `la;
 				8'd58: toneL = `la;  8'd59: toneL = `la;
 				// Coin
-				8'd60: toneL = `sil;  8'd61: toneL = `hb;
-				8'd62: toneL = `hb;  8'd63: toneL = `hb;
-				8'd64: toneL = `hb;  8'd65: toneL = `hb;
-				8'd66: toneL = `hhe;  8'd67: toneL = `hhe;
-				8'd68: toneL = `hhe;  8'd69: toneL = `hhe;
-				8'd70: toneL = `hhe;  8'd71: toneL = `hhe;
-				8'd72: toneL = `hhe;  8'd73: toneL = `hhe;
-				8'd74: toneL = `hhe;  8'd75: toneL = `hhe;
-				8'd76: toneL = `hhe;  8'd77: toneL = `hhe;
-				8'd78: toneL = `hhe;  8'd79: toneL = `hhe;
-				8'd80: toneL = `hhe;  8'd81: toneL = `hhe;
-				8'd82: toneL = `hhe;  8'd83: toneL = `hhe;
+				// 8'd60: toneL = `sil;  8'd61: toneL = `hb;
+				// 8'd62: toneL = `hb;  8'd63: toneL = `hb;
+				// 8'd64: toneL = `hb;  8'd65: toneL = `hb;
+				// 8'd66: toneL = `hhe;  8'd67: toneL = `hhe;
+				// 8'd68: toneL = `hhe;  8'd69: toneL = `hhe;
+				// 8'd70: toneL = `hhe;  8'd71: toneL = `hhe;
+				// 8'd72: toneL = `hhe;  8'd73: toneL = `hhe;
+				// 8'd74: toneL = `hhe;  8'd75: toneL = `hhe;
+				// 8'd76: toneL = `hhe;  8'd77: toneL = `hhe;
+				// 8'd78: toneL = `hhe;  8'd79: toneL = `hhe;
+				// 8'd80: toneL = `hhe;  8'd81: toneL = `hhe;
+				// 8'd82: toneL = `hhe;  8'd83: toneL = `hhe;
                 default: toneL= `sil;
             endcase
         end

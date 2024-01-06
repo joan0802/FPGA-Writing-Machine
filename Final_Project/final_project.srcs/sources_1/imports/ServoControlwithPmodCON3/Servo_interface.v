@@ -7,10 +7,10 @@ module Servo_interface (
     input en,
     input direction,
     input [15:0] num,
-    output pwm_claw,
-    output pwm_left,
-    output pwm_right,
-    output pwm_bottom,
+    output reg pwm_claw,
+    output reg pwm_left,
+    output reg pwm_right,
+    output reg pwm_bottom,
     output [2:0] index
 );
     wire [17:0] count_max;
@@ -34,51 +34,33 @@ module Servo_interface (
     
     // Convert the angle value to 
     // the constant value needed for the PWM.
-    angle_decoder decode_claw(
-        .direction(direction),
-        .angle(angle_claw),
-        .value(value_claw)
-        );
-    angle_decoder decode_left(
-        .direction(direction),
-        .angle(angle_left),
-        .value(value_left)
-        );
-    angle_decoder decode_right(
-        .direction(direction),
-        .angle(angle_right),
-        .value(value_right)
-        );
-    angle_decoder decode_bottom(
-        .direction(direction),
-        .angle(angle_bottom),
-        .value(value_bottom)
-        );
+    assign value_claw = (10'd944)*(angle_claw)+ 16'd60000;
+    assign value_left = (10'd944)*(angle_left)+ 16'd60000;
+    assign value_right = (10'd944)*(angle_right)+ 16'd60000;
+    assign value_bottom = (10'd944)*(angle_bottom)+ 16'd60000;
     
     // Compare the count value from the
     // counter, with the constant value set by
     // the switches.
-    comparator compare_claw(
-        .A(count_max),
-        .B(value_claw),
-        .PWM(pwm_claw)
-        );
-    comparator compare_left(
-        .A(count_max),
-        .B(value_left),
-        .PWM(pwm_left)
-        );
-    comparator compare_right(
-        .A(count_max),
-        .B(value_right),
-        .PWM(pwm_right)
-        );
-    comparator compare_bottom(
-        .A(count_max),
-        .B(value_bottom),
-        .PWM(pwm_bottom)
-        );
-      
+    always @ (count_max,value_claw) begin
+	    if (count_max < value_claw) pwm_claw <= 1'b1;
+	    else pwm_claw <= 1'b0;
+	end
+
+    always @ (count_max,value_left) begin
+        if (count_max < value_left) pwm_left <= 1'b1;
+        else pwm_left <= 1'b0;
+    end
+
+    always @ (count_max,value_right) begin
+        if (count_max < value_right) pwm_right <= 1'b1;
+        else pwm_right <= 1'b0;
+    end
+
+    always @ (count_max,value_bottom) begin
+        if (count_max < value_bottom) pwm_bottom <= 1'b1;
+        else pwm_bottom <= 1'b0;
+    end
     // Counts up to a certain value and then resets.
     // This module creates the refresh rate of 20ms.   
     counter count(
@@ -87,57 +69,6 @@ module Servo_interface (
         .count(count_max)
         );
         
-endmodule
-
-module angle_decoder(
-    input [6:0] angle,
-    input direction,
-    output reg [17:0] value
-    );
-    
-    // Run when angle changes
-    always @ (angle, direction)begin
-        // The angle gets converted to the 
-        // constant value. This equation
-        // depends on the servo motor you are 
-        // using. To get this equation I used 
-        // trial and error to get the 0
-        // and 360 values and created an equation
-        // based on those two points. 
-
-        // value = 16'd60000 - (10'd300)*(angle);
-        // if(direction == 1'b1) 
-        value = (10'd944)*(angle)+ 16'd60000;
-        // else 
-        //     // value = 25000;
-        //     value = (10'd944)*(angle)+ 16'd25000;
-            // value = 16'd60000 - (10'd300)*(angle);
-        // value = (10'd944)*(angle)+ 16'd60000;
-    end
-endmodule
-
-module comparator (
-	input [19:0] A,
-	input [19:0] B,
-	output reg PWM
-);
-
-    // Run when A or B change
-	always @ (A,B)
-	begin
-	// If A is less than B
-	// output is 1.
-	if (A < B)
-		begin
-		PWM <= 1'b1;
-		end
-	// If A is greater than B
-	// output is 0.
-	else 
-		begin
-		PWM <= 1'b0;
-		end
-	end
 endmodule
 
 module counter (
@@ -181,6 +112,13 @@ module sw_to_angle(
     output reg [2:0] index
     );
 
+    // 左 9'b11_1001000 
+    // 右 9'b11_0000000
+    // 前 9'b10_1001000
+    // 後 9'b10_0000000
+    // 中 9'b10_0100100
+    // 提 ?
+
     reg [8:0] cur_angle;
     wire clk_write;
 
@@ -189,48 +127,48 @@ module sw_to_angle(
         .en(en),
         .clk_div(clk_write)
     );
-    // parameter [8:0] ZERO [0:3] = {
-    //     9'b10_1001000,
-    // };
+    parameter [8:0] ZERO [0:4] = { //後 前 左 後 右
+        9'b10_0000000, 9'b10_1001000, 9'b11_1001000, 9'b10_0000000, 9'b11_0000000
+    };
     parameter [8:0] ONE [0:2] = {
         9'b00_0000000, 9'b10_1001000, 9'b10_0000000
     };
-    // parameter [8:0] TWO [0:21] = {
-
-    // };
-    // parameter [8:0] THREE [0:21] = {
-
-    // };
-    // parameter [8:0] FOUR [0:21] = {
-
-    // };
-    // parameter [8:0] FIVE [0:21] = {
-
-    // };
-    // parameter [8:0] SIX [0:21] = {
-
-    // };
-    parameter [8:0] SEVEN [0:21] = { //前左右後
+    parameter [8:0] TWO [0:6] = { //後 左 中 右 前 左 右 
+        9'b10_0000000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b10_1001000, 9'b11_1001000, 9'b11_0000000
+    };
+    parameter [8:0] THREE [0:7] = { //後 左 右 中 左 右 前 左 (右)
+        9'b10_0000000, 9'b11_1001000, 9'b11_0000000, 9'b10_0100100, 9'b11_1001000, 9'b11_0000000, 9'b10_1001000, 9'b11_1001000
+    };
+    parameter [8:0] FOUR [0:6] = { //後 前 中 左 前 中 右
+        9'b10_0000000, 9'b10_1001000, 9'b10_0100100, 9'b11_1001000, 9'b10_1001000, 9'b10_0100100, 9'b11_0000000
+    };
+    parameter [8:0] FIVE [0:6] = { //後 左 右 中 左 前 右
+        9'b10_0000000, 9'b11_1001000, 9'b11_0000000, 9'b10_0100100, 9'b11_1001000, 9'b10_1001000, 9'b11_0000000 
+    };
+    parameter [8:0] SIX [0:5] = { //後 中 左 前 後 右
+        9'b10_0000000, 9'b10_0100100, 9'b11_1001000, 9'b10_1001000, 9'b10_0000000, 9'b11_0000000
+    };
+    parameter [8:0] SEVEN [0:4] = { //前左右後
         9'b10_0000000, 9'b10_1001000, 9'b11_1001000, 9'b11_0000000, 9'b10_0000000
     };
-    parameter [8:0] EIGHT [0:21] = { //左前右左前右後
+    parameter [8:0] EIGHT [0:7] = { //左前右左前右後
         9'b10_0000000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b11_1001000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
     };
-    parameter [8:0] NINE [0:21] = { //左右前左後右後
+    parameter [8:0] NINE [0:7] = { //左右前左後右後
         9'b10_0000000, 9'b11_1001000, 9'b11_0000000, 9'b10_1001000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
     };
     always @(*) begin
         case(num)
-            // 4'd0: cur_angle = ZERO[index];
+            4'd0: cur_angle = ZERO[index];
             4'd1: cur_angle = ONE[index];
-            // 4'd2: cur_angle = TWO[index];
-            // 4'd3: cur_angle = THREE[index];
-            // 4'd4: cur_angle = FOUR[index];
-            // 4'd5: cur_angle = FIVE[index];
-            // 4'd6: cur_angle = SIX[index];
-            // 4'd7: cur_angle = SEVEN[index];
-            // 4'd8: cur_angle = EIGHT[index];
-            // 4'd9: cur_angle = NINE[index];
+            4'd2: cur_angle = TWO[index];
+            4'd3: cur_angle = THREE[index];
+            4'd4: cur_angle = FOUR[index];
+            4'd5: cur_angle = FIVE[index];
+            4'd6: cur_angle = SIX[index];
+            4'd7: cur_angle = SEVEN[index];
+            4'd8: cur_angle = EIGHT[index];
+            4'd9: cur_angle = NINE[index];
             default: cur_angle = ONE[index];
         endcase
     end
@@ -238,10 +176,52 @@ module sw_to_angle(
         if(rst)
             index <= 3'd0;
         else begin
-            if(index == 3'd2)
-                index <= 3'd0;
-            else
-                index <= index + 1'b1;
+            case(num) 
+                4'd0: begin
+                    if(index == 3'd4) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd1: begin
+                    if(index == 3'd2) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd2: begin
+                    if(index == 3'd6) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd3: begin
+                    if(index == 3'd7) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd4: begin
+                    if(index == 3'd6) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd5: begin
+                    if(index == 3'd6) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd6: begin
+                    if(index == 3'd5) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd7: begin
+                    if(index == 3'd4) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd8: begin
+                    if(index == 3'd7) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                4'd9: begin
+                    if(index == 3'd7) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+                default: begin
+                    if(index == 3'd2) index <= 3'd0;
+                    else index <= index + 1'b1;
+                end
+            endcase
         end
     end
     
