@@ -12,8 +12,8 @@ module Servo_interface (
     output reg pwm_bottom,
     output [2:0] index
 );
-    wire [17:0] count_max;
-    wire [17:0] value_claw, value_left, value_right, value_bottom;
+    wire [19:0] count_max;
+    wire [19:0] value_claw, value_left, value_right, value_bottom;
     wire [6:0] angle_claw, angle_left, angle_right, angle_bottom;
 
 
@@ -135,10 +135,13 @@ module sw_to_angle(
 
     parameter LEFT = 9'b11_0000101;
     parameter RIGHT = 9'b11_0000000;
-    parameter FRONT = 9'b10_0001100;
-    parameter MIDDLE = 9'b10_000101;
+    parameter FRONT = 9'b10_0001100; // 12 degree
+    parameter MIDDLE = 9'b10_0000101; // 5 degree
     parameter BACK = 9'b10_0000000;
     parameter IDLE = 9'b00_0000000;
+    parameter UP = 9'b01_0000101;
+    // parameter UPWRITE = 9'b01_0000010;
+    parameter DOWN = 9'b01_0000000;
     
 
     reg [8:0] cur_angle_lr, cur_angle_fb;
@@ -155,66 +158,87 @@ module sw_to_angle(
     parameter [8:0] ZERO_fb [0:4] = { //後 前 左 後 右
         IDLE, FRONT, FRONT, BACK, BACK
     };
-    // parameter [8:0] ONE_lr [0:2] = {
-    //     IDLE, IDLE, IDLE
-    // };
-    // parameter [8:0] ONE_fb [0:2] = {
-    //     IDLE, FRONT, BACK
-    // };
-    // parameter [8:0] TWO_lr [0:6] = { //後 左 中 右 前 左 右 
-    //     IDLE, LEFT, MIDDLE, RIGHT, FRONT, LEFT, RIGHT
-    // };
-    // parameter [8:0] TWO_fb [0:6] = { //後 左 中 右 前 左 右 
-    //     IDLE, LEFT, MIDDLE, RIGHT, FRONT, LEFT, RIGHT
-    // };
-    // parameter [8:0] THREE [0:7] = { //後 左 右 中 左 右 前 左 (右)
-    //     IDLE, LEFT, RIGHT, MIDDLE, LEFT, RIGHT, FRONT, LEFT
-    // };
-    // parameter [8:0] FOUR [0:6] = { //後 前 中 左 前 中 右
-    //     IDLE, FRONT, MIDDLE, LEFT, FRONT, MIDDLE, RIGHT
-    // };
-    // parameter [8:0] FIVE [0:6] = { //後 左 右 中 左 前 右
-    //     IDLE, LEFT, RIGHT, MIDDLE, LEFT, FRONT, RIGHT 
-    // };
-    // parameter [8:0] SIX [0:5] = { //後 中 左 前 後 右
-    //     IDLE, MIDDLE, LEFT, FRONT, BACK, RIGHT
-    // };
-    // parameter [8:0] SEVEN [0:4] = { //前左右後
-    //     IDLE, FRONT, LEFT, RIGHT, BACK
-    // };
-    // parameter [8:0] EIGHT [0:7] = { //左前右左前右後
-    //     IDLE, LEFT, MIDDLE, RIGHT, LEFT, FRONT, RIGHT, BACK
-    // };
-    // parameter [8:0] NINE [0:7] = { //左右前左後右後
-    //     IDLE, LEFT, RIGHT, FRONT, LEFT, MIDDLE, RIGHT, BACK
-    // };
+    parameter [8:0] ONE_lr [0:2] = {
+        IDLE, IDLE, IDLE
+    };
+    parameter [8:0] ONE_fb [0:2] = {
+        IDLE, FRONT, BACK
+    };
+    parameter [8:0] TWO_lr [0:6] = { //後 左 中 右 前 左 右 
+        IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT, RIGHT
+    };
+    parameter [8:0] TWO_fb [0:6] = { //後 左 中 右 前 左 右 
+        IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT, FRONT
+    };
+    parameter [8:0] THREE_lr [0:7] = { //後 左 右 中 左 右 前 左 (右)
+        IDLE, LEFT, RIGHT, RIGHT, LEFT, RIGHT, RIGHT, LEFT
+    };
+    parameter [8:0] THREE_fb [0:7] = { //後 左 右 中 左 右 前 左 (右)
+        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, MIDDLE, FRONT, FRONT
+    };
+    parameter [8:0] FOUR_lr [0:6] = { //後 前 中 左 前 中 右
+        IDLE, IDLE, IDLE, LEFT, LEFT, LEFT, RIGHT
+    };
+    parameter [8:0] FOUR_fb [0:6] = { //後 前 中 左 前 中 右
+        IDLE, FRONT, MIDDLE, MIDDLE, FRONT, MIDDLE, MIDDLE
+    };
+    parameter [8:0] FIVE_lr [0:6] = { //後 左 右 中 左 前 右
+        IDLE, LEFT, RIGHT, RIGHT, LEFT, LEFT, RIGHT 
+    };
+    parameter [8:0] FIVE_fb [0:6] = { //後 左 右 中 左 前 右
+        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT 
+    };
+    parameter [8:0] SIX_lr [0:5] = { //後 中 左 前 後 右
+        IDLE, IDLE, LEFT, LEFT, LEFT, RIGHT
+    };
+    parameter [8:0] SIX_fb [0:5] = { //後 中 左 前 後 右
+        IDLE, MIDDLE, MIDDLE, FRONT, BACK, BACK
+    };
+    parameter [8:0] SEVEN_lr [0:4] = { //前左右後
+        IDLE, IDLE, LEFT, RIGHT, RIGHT
+    };
+    parameter [8:0] SEVEN_fb [0:4] = { //前左右後
+        IDLE, FRONT, FRONT, FRONT, BACK
+    };
+    parameter [8:0] EIGHT_lr [0:7] = { //左前右左前右後
+        IDLE, LEFT, LEFT, RIGHT, LEFT, LEFT, RIGHT, RIGHT
+    };
+    parameter [8:0] EIGHT_fb [0:7] = { //左前右左前右後
+        IDLE, IDLE, MIDDLE, MIDDLE, MIDDLE, FRONT, FRONT, BACK
+    };
+    parameter [8:0] NINE_lr [0:7] = { //左右前左後右後
+        IDLE, LEFT, RIGHT, RIGHT, LEFT, LEFT, RIGHT, RIGHT
+    };
+    parameter [8:0] NINE_fb [0:7] = { //左右前左後右後
+        IDLE, IDLE, IDLE, FRONT, FRONT, MIDDLE, MIDDLE, BACK
+    };
     always @(*) begin
         case(num)
             4'd0: cur_angle_fb = ZERO_fb[index];
-            // 4'd1: cur_angle = ONE[index];
-            // 4'd2: cur_angle = TWO[index];
-            // 4'd3: cur_angle = THREE[index];
-            // 4'd4: cur_angle = FOUR[index];
-            // 4'd5: cur_angle = FIVE[index];
-            // 4'd6: cur_angle = SIX[index];
-            // 4'd7: cur_angle = SEVEN[index];
-            // 4'd8: cur_angle = EIGHT[index];
-            // 4'd9: cur_angle = NINE[index];
+            4'd1: cur_angle_fb = ONE_fb[index];
+            4'd2: cur_angle_fb = TWO_fb[index];
+            4'd3: cur_angle_fb = THREE_fb[index];
+            4'd4: cur_angle_fb = FOUR_fb[index];
+            4'd5: cur_angle_fb = FIVE_fb[index];
+            4'd6: cur_angle_fb = SIX_fb[index];
+            4'd7: cur_angle_fb = SEVEN_fb[index];
+            4'd8: cur_angle_fb = EIGHT_fb[index];
+            4'd9: cur_angle_fb = NINE_fb[index];
             default: cur_angle_fb = ZERO_fb[index];
         endcase
     end
     always @(*) begin
         case(num)
             4'd0: cur_angle_lr = ZERO_lr[index];
-            // 4'd1: cur_angle = ONE[index];
-            // 4'd2: cur_angle = TWO[index];
-            // 4'd3: cur_angle = THREE[index];
-            // 4'd4: cur_angle = FOUR[index];
-            // 4'd5: cur_angle = FIVE[index];
-            // 4'd6: cur_angle = SIX[index];
-            // 4'd7: cur_angle = SEVEN[index];
-            // 4'd8: cur_angle = EIGHT[index];
-            // 4'd9: cur_angle = NINE[index];
+            4'd1: cur_angle_lr = ONE_lr[index];
+            4'd2: cur_angle_lr = TWO_lr[index];
+            4'd3: cur_angle_lr = THREE_lr[index];
+            4'd4: cur_angle_lr = FOUR_lr[index];
+            4'd5: cur_angle_lr = FIVE_lr[index];
+            4'd6: cur_angle_lr = SIX_lr[index];
+            4'd7: cur_angle_lr = SEVEN_lr[index];
+            4'd8: cur_angle_lr = EIGHT_lr[index];
+            4'd9: cur_angle_lr = NINE_lr[index];
             default: cur_angle_lr = ZERO_lr[index];
         endcase
     end
@@ -290,8 +314,8 @@ module sw_to_angle(
 
             if(cur_angle_fb[8:7] == 2'b00)
                 angle_left = 7'b0;
-            else if(cur_angle_fb[8:7] == 2'b01)
-                angle_left = cur_angle_fb[6:0];
+            else if(cur_angle_fb[8:7] == 2'b10 && cur_angle_fb[6:0] == 7'b0001100)
+                angle_left = 7'b0000011;
             else
                 angle_left = angle_left;
             

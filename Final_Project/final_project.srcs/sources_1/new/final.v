@@ -332,7 +332,7 @@ always @(*) begin
 	else begin
 		if(state == TYPING) begin
 			next_isPressed = 1'b0;
-			for(i = 0; i < 22; i = i + 1) begin
+			for(i = 0; i < 10; i = i + 1) begin
 				if(key_down[KEY_CODES[i]] == 1'b1)
 					next_isPressed = 1'b1;
 				else
