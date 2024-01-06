@@ -42,6 +42,20 @@ module Servo_interface (
     // Compare the count value from the
     // counter, with the constant value set by
     // the switches.
+
+    // always @* begin
+    //     if (count_max < value_claw) pwm_claw = 1'b1;
+	//     else pwm_claw = 1'b0;
+
+    //     if (count_max < value_left) pwm_left = 1'b1;
+    //     else pwm_left = 1'b0;
+
+    //     if (count_max < value_right) pwm_right = 1'b1;
+    //     else pwm_right = 1'b0;
+
+    //     if (count_max < value_bottom) pwm_bottom = 1'b1;
+    //     else pwm_bottom = 1'b0;
+    // end
     always @ (count_max,value_claw) begin
 	    if (count_max < value_claw) pwm_claw <= 1'b1;
 	    else pwm_claw <= 1'b0;
@@ -58,7 +72,7 @@ module Servo_interface (
     end
 
     always @ (count_max,value_bottom) begin
-        if (count_max < value_bottom) pwm_bottom <= 1'b1;
+        if (count_max < value_bottom) pwm_bottom = 1'b1;
         else pwm_bottom <= 1'b0;
     end
     // Counts up to a certain value and then resets.
@@ -128,34 +142,34 @@ module sw_to_angle(
         .clk_div(clk_write)
     );
     parameter [8:0] ZERO [0:4] = { //後 前 左 後 右
-        9'b10_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0000000, 9'b11_0000000
+        9'b00_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0000000, 9'b11_0000000
     };
     parameter [8:0] ONE [0:2] = {
-        9'b10_0000000, 9'b10_1001000, 9'b10_0000000
+        9'b00_0000000, 9'b10_1001000, 9'b10_0000000
     };
     parameter [8:0] TWO [0:6] = { //後 左 中 右 前 左 右 
-        9'b10_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000
+        9'b00_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000
     };
     parameter [8:0] THREE [0:7] = { //後 左 右 中 左 右 前 左 (右)
-        9'b10_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000
+        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000
     };
     parameter [8:0] FOUR [0:6] = { //後 前 中 左 前 中 右
-        9'b10_0000000, 9'b10_1001000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0100100, 9'b11_0000000
+        9'b00_0000000, 9'b10_1001000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0100100, 9'b11_0000000
     };
     parameter [8:0] FIVE [0:6] = { //後 左 右 中 左 前 右
-        9'b10_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000 
+        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000 
     };
     parameter [8:0] SIX [0:5] = { //後 中 左 前 後 右
-        9'b10_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0000000, 9'b11_0000000
+        9'b00_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0000000, 9'b11_0000000
     };
     parameter [8:0] SEVEN [0:4] = { //前左右後
-        9'b10_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000, 9'b10_0000000
+        9'b00_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000, 9'b10_0000000
     };
     parameter [8:0] EIGHT [0:7] = { //左前右左前右後
-        9'b10_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
+        9'b00_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
     };
     parameter [8:0] NINE [0:7] = { //左右前左後右後
-        9'b10_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
+        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
     };
     always @(*) begin
         case(num)
@@ -242,24 +256,30 @@ module sw_to_angle(
             else
                 angle_claw = 7'b0;
 
-            if(cur_angle[8:7] == 2'b01)
+            if(cur_angle[8:7] == 2'b00)
+                angle_left = 7'b0;
+            else if(cur_angle[8:7] == 2'b01)
                 angle_left = cur_angle[6:0];
-            else if(sw[1] == 1'b1) 
-                angle_left = 7'b110000;
+            // else if(sw[1] == 1'b1) 
+            //     angle_left = 7'b110000;
             else
                 angle_left = angle_left;
 
-            if(cur_angle[8:7] == 2'b10)
+            if(cur_angle[8:7] == 2'b00)
+                angle_right = 7'b0;
+            else if(cur_angle[8:7] == 2'b10)
                 angle_right = cur_angle[6:0];
-            else if(sw[2] == 1'b1)
-                angle_right = 7'b110000;
+            // else if(sw[2] == 1'b1)
+            //     angle_right = 7'b110000;
             else
                 angle_right = angle_right;
 
-            if(cur_angle[8:7] == 2'b11)
+            if(cur_angle[8:7] == 2'b00)
+                angle_bottom = 7'b0;
+            else if(cur_angle[8:7] == 2'b11)
                 angle_bottom = cur_angle[6:0];
-            else if(sw[3] == 1'b1)
-                angle_bottom = 7'b110000;
+            // else if(sw[3] == 1'b1)
+            //     angle_bottom = 7'b110000;
             else
                 angle_bottom = angle_bottom;
         end
