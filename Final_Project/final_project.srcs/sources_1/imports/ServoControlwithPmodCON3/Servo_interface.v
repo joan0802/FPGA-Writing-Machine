@@ -210,15 +210,15 @@ module sw_to_angle(
     // parameter [8:0] SIX [0:21] = {
 
     // };
-    parameter [8:0] SEVEN [0:21] = { //前左右後
-        9'b10_0000000, 9'b10_1001000, 9'b11_1001000, 9'b11_0000000, 9'b10_0000000
-    };
-    parameter [8:0] EIGHT [0:21] = { //左前右左前右後
-        9'b10_0000000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b11_1001000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
-    };
-    parameter [8:0] NINE [0:21] = { //左右前左後右後
-        9'b10_0000000, 9'b11_1001000, 9'b11_0000000, 9'b10_1001000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
-    };
+    // parameter [8:0] SEVEN [0:4] = { //前左右後
+    //     9'b10_0000000, 9'b10_1001000, 9'b11_1001000, 9'b11_0000000, 9'b10_0000000
+    // };
+    // parameter [8:0] EIGHT [0:7] = { //左前右左前右後
+    //     9'b10_0000000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b11_1001000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
+    // };
+    // parameter [8:0] NINE [0:7] = { //左右前左後右後
+    //     9'b10_0000000, 9'b11_1001000, 9'b11_0000000, 9'b10_1001000, 9'b11_1001000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
+    // };
     always @(*) begin
         case(num)
             // 4'd0: cur_angle = ZERO[index];
@@ -238,10 +238,45 @@ module sw_to_angle(
         if(rst)
             index <= 3'd0;
         else begin
-            if(index == 3'd2)
-                index <= 3'd0;
-            else
-                index <= index + 1'b1;
+            case(num)
+                4'd1: begin
+                    if(index == 3'd2)
+                        index <= 3'd0;
+                    else
+                        index <= index + 1'b1;
+                end
+                4'd2: begin
+                end
+                4'd3: begin
+                end
+                4'd4: begin
+                end
+                4'd5: begin
+                end
+                4'd6: begin
+                end
+                4'd7: begin
+                    if(index == 3'd4)
+                        index <= 3'd0;
+                    else
+                        index <= index + 1'b1;
+                end
+                4'd8: begin
+                    if(index == 3'd7)
+                        index <= 3'd0;
+                    else
+                        index <= index + 1'b1;
+                end
+                4'd9: begin
+                    if(index == 3'd7)
+                        index <= 3'd0;
+                    else
+                        index <= index + 1'b1;
+                end
+                default begin
+                    index <= 3'd0;
+                end
+            endcase
         end
     end
     

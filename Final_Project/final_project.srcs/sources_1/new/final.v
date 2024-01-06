@@ -487,18 +487,18 @@ module music (
 				8'd56: toneR = `hg;  8'd57: toneR = `hg;
 				8'd58: toneR = `hg;  8'd59: toneR = `hg;
 				// Coin
-				8'd60: toneR = `sil;  8'd61: toneR = `hb;
-				8'd62: toneR = `hb;  8'd63: toneR = `hb;
-				8'd64: toneR = `hb;  8'd65: toneR = `hb;
-				8'd66: toneR = `hhe;  8'd67: toneR = `hhe;
-				8'd68: toneR = `hhe;  8'd69: toneR = `hhe;
-				8'd70: toneR = `hhe;  8'd71: toneR = `hhe;
-				8'd72: toneR = `hhe;  8'd73: toneR = `hhe;
-				8'd74: toneR = `hhe;  8'd75: toneR = `hhe;
-				8'd76: toneR = `hhe;  8'd77: toneR = `hhe;
-				8'd78: toneR = `hhe;  8'd79: toneR = `hhe;
-				8'd80: toneR = `hhe;  8'd81: toneR = `hhe;
-				8'd82: toneR = `hhe;  8'd83: toneR = `hhe;
+				// 8'd60: toneR = `sil;  8'd61: toneR = `hb;
+				// 8'd62: toneR = `hb;  8'd63: toneR = `hb;
+				// 8'd64: toneR = `hb;  8'd65: toneR = `hb;
+				// 8'd66: toneR = `hhe;  8'd67: toneR = `hhe;
+				// 8'd68: toneR = `hhe;  8'd69: toneR = `hhe;
+				// 8'd70: toneR = `hhe;  8'd71: toneR = `hhe;
+				// 8'd72: toneR = `hhe;  8'd73: toneR = `hhe;
+				// 8'd74: toneR = `hhe;  8'd75: toneR = `hhe;
+				// 8'd76: toneR = `hhe;  8'd77: toneR = `hhe;
+				// 8'd78: toneR = `hhe;  8'd79: toneR = `hhe;
+				// 8'd80: toneR = `hhe;  8'd81: toneR = `hhe;
+				// 8'd82: toneR = `hhe;  8'd83: toneR = `hhe;
                 default: toneR = `sil;
             endcase
         end
@@ -646,18 +646,18 @@ module music (
 				8'd56: toneL= `la;  8'd57: toneL= `la;
 				8'd58: toneL = `la;  8'd59: toneL = `la;
 				// Coin
-				8'd60: toneL = `sil;  8'd61: toneL = `hb;
-				8'd62: toneL = `hb;  8'd63: toneL = `hb;
-				8'd64: toneL = `hb;  8'd65: toneL = `hb;
-				8'd66: toneL = `hhe;  8'd67: toneL = `hhe;
-				8'd68: toneL = `hhe;  8'd69: toneL = `hhe;
-				8'd70: toneL = `hhe;  8'd71: toneL = `hhe;
-				8'd72: toneL = `hhe;  8'd73: toneL = `hhe;
-				8'd74: toneL = `hhe;  8'd75: toneL = `hhe;
-				8'd76: toneL = `hhe;  8'd77: toneL = `hhe;
-				8'd78: toneL = `hhe;  8'd79: toneL = `hhe;
-				8'd80: toneL = `hhe;  8'd81: toneL = `hhe;
-				8'd82: toneL = `hhe;  8'd83: toneL = `hhe;
+				// 8'd60: toneL = `sil;  8'd61: toneL = `hb;
+				// 8'd62: toneL = `hb;  8'd63: toneL = `hb;
+				// 8'd64: toneL = `hb;  8'd65: toneL = `hb;
+				// 8'd66: toneL = `hhe;  8'd67: toneL = `hhe;
+				// 8'd68: toneL = `hhe;  8'd69: toneL = `hhe;
+				// 8'd70: toneL = `hhe;  8'd71: toneL = `hhe;
+				// 8'd72: toneL = `hhe;  8'd73: toneL = `hhe;
+				// 8'd74: toneL = `hhe;  8'd75: toneL = `hhe;
+				// 8'd76: toneL = `hhe;  8'd77: toneL = `hhe;
+				// 8'd78: toneL = `hhe;  8'd79: toneL = `hhe;
+				// 8'd80: toneL = `hhe;  8'd81: toneL = `hhe;
+				// 8'd82: toneL = `hhe;  8'd83: toneL = `hhe;
                 default: toneL= `sil;
             endcase
         end
