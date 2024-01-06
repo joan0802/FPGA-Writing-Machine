@@ -60,7 +60,7 @@ module final(
 parameter [1:0] IDLE = 2'b00;
 parameter [1:0] TYPING = 2'b01;
 parameter [1:0] WRITING = 2'b10;
-reg [2:0] state, next_state;
+reg [1:0] state, next_state;
 // KEYBOARD
 wire [90:0] key_down;
 wire [8:0] last_change;
@@ -145,7 +145,6 @@ Servo_interface servo_claw (
 	.sw({SW3, SW2, SW1, SW0}),
 	.rst(rst),
 	.clk(clk),
-	.direction(1'b1),
 	.en(state == WRITING),
 	.num(num),
 	.pwm_claw(pwm_claw),
@@ -272,7 +271,7 @@ always @(*) begin
     else begin
         if(state == TYPING) begin
             if(key_valid == 1'b1 && key_down[last_change] == 1'b1 && (isPressed == 1'b0)) begin
-                if(key_num <= 4'd9 && key_num >= 0) begin
+                if(4'd9 >= key_num && key_num >= 0) begin
                     next_num[15:12] = num[11:8];
                     next_num[11:8] = num[7:4];
                     next_num[7:4] = num[3:0];
@@ -315,17 +314,6 @@ always @ (*) begin
 		KEY_CODES[07] : key_num = 4'b0111;
 		KEY_CODES[08] : key_num = 4'b1000;
 		KEY_CODES[09] : key_num = 4'b1001;
-
-		KEY_CODES[10] : key_num = 4'b0000;
-		KEY_CODES[11] : key_num = 4'b0001;
-		KEY_CODES[12] : key_num = 4'b0010;
-		KEY_CODES[13] : key_num = 4'b0011;
-		KEY_CODES[14] : key_num = 4'b0100;
-		KEY_CODES[15] : key_num = 4'b0101;
-		KEY_CODES[16] : key_num = 4'b0110;
-		KEY_CODES[17] : key_num = 4'b0111;
-		KEY_CODES[18] : key_num = 4'b1000;
-		KEY_CODES[19] : key_num = 4'b1001;
 		default		  : key_num = 4'b1111;
 	endcase
 end
