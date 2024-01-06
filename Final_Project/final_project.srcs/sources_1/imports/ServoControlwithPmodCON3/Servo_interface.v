@@ -126,12 +126,13 @@ module sw_to_angle(
     output reg [2:0] index
     );
 
-    // 左 9'b11_0011000 
-    // 右 9'b11_0000000
-    // 前 9'b10_1001000
-    // 後 9'b10_0000000
-    // 中 9'b10_0100100
-    // 提 ?
+    parameter LEFT = 9'b11_0011000;
+    parameter RIGHT = 9'b11_0000000;
+    parameter FRONT = 9'b10_1001000;
+    parameter MIDDLE = 9'b10_0100100;
+    parameter BACK = 9'b10_0000000;
+    parameter IDLE = 9'b00_0000000;
+    
 
     reg [8:0] cur_angle;
     wire clk_write;
@@ -142,34 +143,34 @@ module sw_to_angle(
         .clk_div(clk_write)
     );
     parameter [8:0] ZERO [0:4] = { //後 前 左 後 右
-        9'b00_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0000000, 9'b11_0000000
+        IDLE, FRONT, LEFT, BACK, RIGHT
     };
     parameter [8:0] ONE [0:2] = {
-        9'b00_0000000, 9'b10_1001000, 9'b10_0000000
+        IDLE, FRONT, BACK
     };
     parameter [8:0] TWO [0:6] = { //後 左 中 右 前 左 右 
-        9'b00_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000
+        IDLE, LEFT, MIDDLE, RIGHT, FRONT, LEFT, RIGHT
     };
     parameter [8:0] THREE [0:7] = { //後 左 右 中 左 右 前 左 (右)
-        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000
+        IDLE, LEFT, RIGHT, MIDDLE, LEFT, RIGHT, FRONT, LEFT
     };
     parameter [8:0] FOUR [0:6] = { //後 前 中 左 前 中 右
-        9'b00_0000000, 9'b10_1001000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0100100, 9'b11_0000000
+        IDLE, FRONT, MIDDLE, LEFT, FRONT, MIDDLE, RIGHT
     };
     parameter [8:0] FIVE [0:6] = { //後 左 右 中 左 前 右
-        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000 
+        IDLE, LEFT, RIGHT, MIDDLE, LEFT, FRONT, RIGHT 
     };
     parameter [8:0] SIX [0:5] = { //後 中 左 前 後 右
-        9'b00_0000000, 9'b10_0100100, 9'b11_0011000, 9'b10_1001000, 9'b10_0000000, 9'b11_0000000
+        IDLE, MIDDLE, LEFT, FRONT, BACK, RIGHT
     };
     parameter [8:0] SEVEN [0:4] = { //前左右後
-        9'b00_0000000, 9'b10_1001000, 9'b11_0011000, 9'b11_0000000, 9'b10_0000000
+        IDLE, FRONT, LEFT, RIGHT, BACK
     };
     parameter [8:0] EIGHT [0:7] = { //左前右左前右後
-        9'b00_0000000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b11_0011000, 9'b10_1001000, 9'b11_0000000, 9'b10_0000000
+        IDLE, LEFT, MIDDLE, RIGHT, LEFT, FRONT, RIGHT, BACK
     };
     parameter [8:0] NINE [0:7] = { //左右前左後右後
-        9'b00_0000000, 9'b11_0011000, 9'b11_0000000, 9'b10_1001000, 9'b11_0011000, 9'b10_0100100, 9'b11_0000000, 9'b10_0000000
+        IDLE, LEFT, RIGHT, FRONT, LEFT, MIDDLE, RIGHT, BACK
     };
     always @(*) begin
         case(num)
@@ -254,7 +255,7 @@ module sw_to_angle(
             if(sw[0] == 1'b1) 
                 angle_claw = 7'b110000;
             else
-                angle_claw = 7'b0;
+                angle_claw = 7'b0; // NEED TO CHANGE
 
             if(cur_angle[8:7] == 2'b00)
                 angle_left = 7'b0;
