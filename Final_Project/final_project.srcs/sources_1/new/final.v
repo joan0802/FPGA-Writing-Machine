@@ -86,6 +86,8 @@ wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the cloc
 wire clk_div22;
 // Servo
 // reg claw, left_right, bottom;
+// debug
+wire [2:0] index;
 
 clock_divider #(.n(22)) clock_22(.clk(clk), .en(1), .clk_div(clk_div22));
 assign freq_outL = 50000000 / freqL;
@@ -154,43 +156,9 @@ Servo_interface servo_claw (
 	.pwm_claw(pwm_claw),
 	.pwm_left(pwm_left),
 	.pwm_right(pwm_right),
-	.pwm_bottom(pwm_bottom)
+	.pwm_bottom(pwm_bottom),
+	.index(index)
 );
-
-// Servo_interface servo_claw (
-// 	.sw(!SW0),
-// 	.rst(rst),
-// 	.clk(clk),
-// 	.direction(1'b1),
-// 	.num(num),
-// 	.PWM(pwm_claw)
-// );
-
-// Servo_interface servo_left ( // clockwise
-// 	.sw(!SW1),
-// 	.rst(rst),
-// 	.clk(clk),
-// 	.direction(1'b1),
-// 	.num(num),
-// 	.PWM(pwm_left)
-// );
-
-// Servo_interface servo_right ( // counterclockwise
-// 	.sw(SW2),
-// 	.rst(rst),
-// 	.clk(clk),
-// 	.direction(1'b1),
-// 	.num(num),
-// 	.PWM(pwm_right)
-// );
-
-// Servo_interface servo_bottom (
-// 	.sw(!SW3),
-// 	.rst(rst),
-// 	.clk(clk),
-// 	.direction(1'b1),
-// 	.PWM(pwm_bottom)
-// );
 
 parameter [8:0] KEY_CODES [0:21] = {
 	9'b0_0100_0101,	// 0 => 45
@@ -266,14 +234,15 @@ always @* begin
 			WRITING: next_led[7:4] = 4'b1111;
 		endcase
 
-		if(SW0) next_led[0] = 1'b1;
-		else next_led[0] = 1'b0;
-		if(SW1) next_led[1] = 1'b1;
-		else next_led[1] = 1'b0;
-		if(SW2) next_led[2] = 1'b1;
-		else next_led[2] = 1'b0;
-		if(SW3) next_led[3] = 1'b1;
-		else next_led[3] = 1'b0;
+		next_led[3:0] = index + 1'b1;
+		// if(SW0) next_led[0] = 1'b1;
+		// else next_led[0] = 1'b0;
+		// if(SW1) next_led[1] = 1'b1;
+		// else next_led[1] = 1'b0;
+		// if(SW2) next_led[2] = 1'b1;
+		// else next_led[2] = 1'b0;
+		// if(SW3) next_led[3] = 1'b1;
+		// else next_led[3] = 1'b0;
 	end
 end
 

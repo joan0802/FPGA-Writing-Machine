@@ -10,7 +10,8 @@ module Servo_interface (
     output pwm_claw,
     output pwm_left,
     output pwm_right,
-    output pwm_bottom
+    output pwm_bottom,
+    output [2:0] index
 );
     wire [17:0] count_max;
     wire [17:0] value_claw, value_left, value_right, value_bottom;
@@ -26,6 +27,8 @@ module Servo_interface (
         .angle_bottom(angle_bottom),
         .num(num[3:0]),
         .en(en),
+        .clk(clk),
+        .index(index),
         .rst(rst)
         );
     
@@ -170,14 +173,15 @@ module sw_to_angle(
     input en,
     input [3:0] num,
     input rst,
+    input clk,
     output reg [6:0] angle_claw,
     output reg [6:0] angle_left,
     output reg [6:0] angle_right,
-    output reg [6:0] angle_bottom
+    output reg [6:0] angle_bottom,
+    output reg [2:0] index
     );
 
     reg [8:0] cur_angle;
-    reg [2:0] index;
     wire clk_write;
 
     clock_divider #(27) divider(
@@ -185,11 +189,11 @@ module sw_to_angle(
         .en(en),
         .clk_div(clk_write)
     );
-    // parameter [9:0] ZERO [0:3] = {
+    // parameter [8:0] ZERO [0:3] = {
     //     9'b10_1001000,
     // };
     parameter [8:0] ONE [0:2] = {
-        9'b10_0, 9'b10_1001000, 9'b10_0
+        9'b00_0000000, 9'b10_1001000, 9'b10_0000000
     };
     // parameter [8:0] TWO [0:21] = {
 
@@ -247,34 +251,30 @@ module sw_to_angle(
     // reg claw, left, right, bottom;
     always @ (*)
     begin
-        // if(sw[0] == 1'b0) 
-        //     angle_claw = 7'd0; // counterclockwise
-        // else if(sw[0] == 1'b1)
-        //     angle_claw = 7'b110000;
         if(sw[0] == 1'b1) 
-            angle_claw = 7'b0;
-        else
             angle_claw = 7'b110000;
+        else
+            angle_claw = 7'b0;
 
         if(cur_angle[8:7] == 2'b01)
             angle_left = cur_angle[6:0];
         else if(sw[1] == 1'b1) 
             angle_left = 7'b110000;
         else
-            angle_left = 7'd0;
+            angle_left = angle_left;
 
         if(cur_angle[8:7] == 2'b10)
             angle_right = cur_angle[6:0];
         else if(sw[2] == 1'b1)
             angle_right = 7'b110000;
         else
-            angle_right = 7'd0;
+            angle_right = angle_right;
 
         if(cur_angle[8:7] == 2'b11)
             angle_bottom = cur_angle[6:0];
         else if(sw[3] == 1'b1)
             angle_bottom = 7'b110000;
         else
-            angle_bottom = 7'd0;
+            angle_bottom = angle_bottom;
     end
 endmodule
