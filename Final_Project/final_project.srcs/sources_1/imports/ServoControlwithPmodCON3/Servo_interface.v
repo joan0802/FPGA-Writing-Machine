@@ -17,7 +17,7 @@ module Servo_interface (
     wire [19:0] value_claw, value_left, value_right, value_bottom;
     wire [6:0] angle_claw, angle_left, angle_right, angle_bottom;
     reg [3:0] cur_num;
-    wire isWriting;
+    wire nextIsWriting;
     wire clk_write;
 
 
@@ -31,7 +31,7 @@ module Servo_interface (
         .num(cur_num),
         .en(en),
         .finish_writing(finish_writing),
-        .isWriting(isWriting),
+        .nextIsWriting(nextIsWriting),
         .clk(clk),
         .clk_write(clk_write),
         .index(index),
@@ -61,7 +61,7 @@ module Servo_interface (
             finish_writing <= 1'b0;
         end
         else begin
-            if(isWriting == 1'b1) begin
+            if(nextIsWriting == 1'b1) begin
                 if(cur_num == 4'd10)
                     cur_num <= num[3:0];
                 else
@@ -180,9 +180,9 @@ module sw_to_angle(
     output reg [6:0] angle_right,
     output reg [6:0] angle_bottom,
     output reg [2:0] index,
-    output reg isWriting
+    output reg nextIsWriting
     );
-
+    
     parameter LEFT = 9'b11_0000101;
     parameter RIGHT = 9'b11_0000000;
     parameter FRONT = 9'b10_0001100; // 12 degree
@@ -196,6 +196,7 @@ module sw_to_angle(
 
     reg [8:0] cur_angle_lr, cur_angle_fb;
     reg [7:0] position;
+    reg isWriting;
 
     parameter [8:0] ZERO_lr [0:4] = { //後 前 左 後 右
         IDLE, IDLE, LEFT, LEFT, RIGHT
@@ -292,7 +293,7 @@ module sw_to_angle(
         if(rst) 
             position <= 8'd0;
         else begin
-            if(isWriting == 1'b0) begin
+            if(nextIsWriting == 1'b0) begin
                 position <= angle_bottom + 8'd8;
             end
             else begin
@@ -303,123 +304,209 @@ module sw_to_angle(
 
     always @(posedge clk_write, posedge rst) begin
         if(rst) begin
-            index <= 3'd0;
             isWriting <= 1'b1;
+        end
+        else begin
+            isWriting <= nextIsWriting;
+        end
+    end
+
+    always @* begin
+        if(rst) begin
+            nextIsWriting = 1'b1;
+        end
+        else if(finish_writing == 1'b1) begin
+            nextIsWriting = 1'b0;
+        end
+        else begin
+            case(num) 
+                4'd0: begin
+                    if(index == 3'd4) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd1: begin
+                    if(index == 3'd2) begin
+                        nextIsWriting = 1'b0;
+                    end 
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd2: begin
+                    if(index == 3'd5) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd3: begin
+                    if(index == 3'd7) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd4: begin
+                    if(index == 3'd4) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd5: begin
+                    if(index == 3'd7) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd6: begin
+                    if(index == 3'd6)  begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd7: begin
+                    if(index == 3'd2) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd8: begin
+                    if(index == 3'd6) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                4'd9: begin
+                    if(index == 3'd7) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+                default: begin
+                    if(index == 3'd4) begin
+                        nextIsWriting = 1'b0;
+                    end
+                    else begin
+                        nextIsWriting = 1'b1;
+                    end
+                end
+            endcase
+        end
+    end
+
+    always @(posedge clk_write, posedge rst) begin
+        if(rst) begin
+            index <= 3'd0;
         end
         else if(finish_writing == 1'b1) begin
             index <= 3'd0;
-            isWriting <= 1'b0;
         end
         else begin
             case(num) 
                 4'd0: begin
                     if(index == 3'd4) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd1: begin
                     if(index == 3'd2) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end 
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd2: begin
                     if(index == 3'd5) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd3: begin
                     if(index == 3'd7) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd4: begin
                     if(index == 3'd4) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd5: begin
                     if(index == 3'd7) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd6: begin
                     if(index == 3'd6)  begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd7: begin
                     if(index == 3'd2) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd8: begin
                     if(index == 3'd6) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 4'd9: begin
                     if(index == 3'd7) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
                 default: begin
                     if(index == 3'd4) begin
                         index <= 3'd0;
-                        isWriting <= 1'b0;
                     end
                     else begin
                         index <= index + 1'b1;
-                        isWriting <= 1'b1;
                     end
                 end
             endcase
