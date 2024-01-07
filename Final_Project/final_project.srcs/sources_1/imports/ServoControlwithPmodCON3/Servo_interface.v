@@ -6,11 +6,12 @@ module Servo_interface (
     input clk,
     input en,
     input [15:0] num,
+    input [1:0] state,
     output reg pwm_claw,
     output reg pwm_left,
     output reg pwm_right,
     output reg pwm_bottom,
-    output [2:0] index,
+    output [3:0] index,
     output reg finish_writing
 );
     wire [19:0] count_max;
@@ -61,29 +62,34 @@ module Servo_interface (
             finish_writing <= 1'b0;
         end
         else begin
-            if(nextIsWriting == 1'b1) begin
-                if(cur_num == 4'd10)
-                    cur_num <= num[3:0];
-                else
-                    cur_num <= cur_num;
+            if(state == 2'b01) begin
                 finish_writing <= 1'b0;
             end
-            else begin
-                if(cur_num == num[3:0] && num[7:4] != 4'd10) begin
-                    cur_num <= num[7:4];
-                    finish_writing <= 1'b0;
-                end
-                else if(cur_num == num[7:4] && num[11:8] != 4'd10) begin
-                    cur_num <= num[11:8];
-                    finish_writing <= 1'b0;
-                end
-                else if(cur_num == num[11:8] && num[15:12] != 4'd10) begin
-                    cur_num <= num[15:12];
+            else if(state == 2'b10) begin
+                if(nextIsWriting == 1'b1) begin
+                    if(cur_num == 4'd10)
+                        cur_num <= num[3:0];
+                    else
+                        cur_num <= cur_num;
                     finish_writing <= 1'b0;
                 end
                 else begin
-                    cur_num <= cur_num;
-                    finish_writing <= 1'b1;
+                    if(cur_num == num[3:0] && num[7:4] != 4'd10) begin
+                        cur_num <= num[7:4];
+                        finish_writing <= 1'b0;
+                    end
+                    else if(cur_num == num[7:4] && num[11:8] != 4'd10) begin
+                        cur_num <= num[11:8];
+                        finish_writing <= 1'b0;
+                    end
+                    else if(cur_num == num[11:8] && num[15:12] != 4'd10) begin
+                        cur_num <= num[15:12];
+                        finish_writing <= 1'b0;
+                    end
+                    else begin
+                        cur_num <= cur_num;
+                        finish_writing <= 1'b1;
+                    end
                 end
             end
         end
@@ -179,11 +185,11 @@ module sw_to_angle(
     output reg [6:0] angle_left,
     output reg [6:0] angle_right,
     output reg [6:0] angle_bottom,
-    output reg [2:0] index,
+    output reg [3:0] index,
     output reg nextIsWriting
     );
     
-    parameter LEFT = 9'b11_0000101;
+    parameter LEFT = 9'b11_0000100;
     parameter RIGHT = 9'b11_0000000;
     parameter FRONT = 9'b10_0001010; // 10 degree
     parameter MIDDLE = 9'b10_0000101; // 5 degree
@@ -198,65 +204,65 @@ module sw_to_angle(
     reg [7:0] position;
     reg isWriting;
 
-    parameter [8:0] ZERO_lr [0:6] = { //後 前 後 前 左 後 右
-        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT, RIGHT
+    parameter [8:0] ZERO_lr [0:8] = { //後 前 後 前 左 後 右 左
+        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] ZERO_fb [0:6] = { //後 前 後 前 左 後 右
-        IDLE, FRONT, BACK, FRONT, FRONT, BACK, BACK
+    parameter [8:0] ZERO_fb [0:8] = { //後 前 後 前 左 後 右 左
+        IDLE, FRONT, BACK, FRONT, FRONT, BACK, BACK, BACK, BACK  
     };
-    parameter [8:0] ONE_lr [0:2] = {
-        IDLE, IDLE, IDLE
+    parameter [8:0] ONE_lr [0:3] = {
+        IDLE, IDLE, IDLE, IDLE
     };
-    parameter [8:0] ONE_fb [0:2] = {
-        IDLE, FRONT, BACK
+    parameter [8:0] ONE_fb [0:3] = {
+        IDLE, FRONT, BACK, IDLE
     };
-    parameter [8:0] TWO_lr [0:5] = { //後 左 中 右 前 左 
-        IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT
+    parameter [8:0] TWO_lr [0:6] = { //後 左 中 右 前 左 
+        IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] TWO_fb [0:5] = { //後 左 中 右 前 左 
-        IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT
+    parameter [8:0] TWO_fb [0:6] = { //後 左 中 右 前 左 
+        IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT, FRONT
     };
-    parameter [8:0] THREE_lr [0:7] = { //後 左 右 中 左 右 前 左
-        IDLE, LEFT, RIGHT, RIGHT, LEFT, RIGHT, RIGHT, LEFT
+    parameter [8:0] THREE_lr [0:8] = { //後 左 右 中 左 右 前 左
+        IDLE, LEFT, RIGHT, RIGHT, LEFT, RIGHT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] THREE_fb [0:7] = { //後 左 右 中 左 右 前 左 (右)
-        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, MIDDLE, FRONT, FRONT
+    parameter [8:0] THREE_fb [0:8] = { //後 左 右 中 左 右 前 左 (右)
+        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, MIDDLE, FRONT, FRONT, FRONT
     };
-    parameter [8:0] FOUR_lr [0:5] = { //後 前 後 中 左 前 
-        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT
+    parameter [8:0] FOUR_lr [0:6] = { //後 前 後 中 左 前 
+        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT, LEFT
     };
-    parameter [8:0] FOUR_fb [0:5] = { //後 前 後 中 左 前 
-        IDLE, FRONT, BACK, MIDDLE, MIDDLE, FRONT
+    parameter [8:0] FOUR_fb [0:6] = { //後 前 後 中 左 前 
+        IDLE, FRONT, BACK, MIDDLE, MIDDLE, FRONT, FRONT
     };
-    parameter [8:0] FIVE_lr [0:7] = { //後 左 右 中 左 前 右
-        IDLE, LEFT, RIGHT, RIGHT, LEFT, LEFT, RIGHT, LEFT
+    parameter [8:0] FIVE_lr [0:8] = { //後 左 右 中 左 前 右
+        IDLE, LEFT, RIGHT, RIGHT, LEFT, LEFT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] FIVE_fb [0:7] = { //後 左 右 中 左 前 右
-        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT, FRONT 
+    parameter [8:0] FIVE_fb [0:8] = { //後 左 右 中 左 前 右
+        IDLE, IDLE, IDLE, MIDDLE, MIDDLE, FRONT, FRONT, FRONT, FRONT 
     };
-    parameter [8:0] SIX_lr [0:6] = { //後 左 前 後 右 中 左
-        IDLE, LEFT, LEFT, LEFT, RIGHT, RIGHT, LEFT
+    parameter [8:0] SIX_lr [0:7] = { //後 左 前 後 右 中 左
+        IDLE, LEFT, LEFT, LEFT, RIGHT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] SIX_fb [0:6] = { //後 左 前 後 右 中 左
-        IDLE, IDLE, FRONT, BACK, BACK, MIDDLE, MIDDLE
+    parameter [8:0] SIX_fb [0:7] = { //後 左 前 後 右 中 左
+        IDLE, IDLE, FRONT, BACK, BACK, MIDDLE, MIDDLE, MIDDLE
     };
-    parameter [8:0] SEVEN_lr [0:5] = { //後 前 後 前 左 中
-        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT
+    parameter [8:0] SEVEN_lr [0:6] = { //後 前 後 前 左 中
+        IDLE, IDLE, IDLE, IDLE, LEFT, LEFT, LEFT
     };
-    parameter [8:0] SEVEN_fb [0:5] = { //後 前 後 前 左 中
-        IDLE, FRONT, BACK, FRONT, FRONT, MIDDLE
+    parameter [8:0] SEVEN_fb [0:6] = { //後 前 後 前 左 中
+        IDLE, FRONT, BACK, FRONT, FRONT, MIDDLE, MIDDLE
     };
-    parameter [8:0] EIGHT_lr [0:7] = { //後 中 左 前 右 後 左 中
+    parameter [8:0] EIGHT_lr [0:8] = { //後 中 左 前 右 後 左 中
+        IDLE, IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT, LEFT, LEFT
+    };
+    parameter [8:0] EIGHT_fb [0:8] = { //後 中 左 前 右 後 左 中
+        IDLE, MIDDLE, MIDDLE, FRONT, FRONT, BACK, BACK, MIDDLE, MIDDLE
+    };
+    parameter [8:0] NINE_lr [0:7] = { //後 中 左 前 右 後 左
         IDLE, IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT, LEFT
     };
-    parameter [8:0] EIGHT_fb [0:7] = { //後 中 左 前 右 後 左 中
-        IDLE, MIDDLE, MIDDLE, FRONT, FRONT, BACK, BACK, MIDDLE
-    };
-    parameter [8:0] NINE_lr [0:7] = { //後 中 前 左 中 右 後 左
-        IDLE, IDLE, IDLE, LEFT, LEFT, RIGHT, RIGHT, LEFT
-    };
-    parameter [8:0] NINE_fb [0:7] = { //後 中 前 左 中 右 後 左
-        IDLE, MIDDLE, FRONT, FRONT, MIDDLE, MIDDLE, BACK, BACK
+    parameter [8:0] NINE_fb [0:7] = { //後 中 左 前 右 後 左
+        IDLE, MIDDLE, MIDDLE, FRONT, FRONT, BACK, BACK, BACK
     };
     always @(*) begin
         case(num)
@@ -294,7 +300,7 @@ module sw_to_angle(
             position <= 8'd0;
         else begin
             if(nextIsWriting == 1'b0) begin
-                position <= angle_bottom + 8'd8;
+                position <= angle_bottom + 8'd7;
             end
             else begin
                 position <= position;
@@ -321,7 +327,7 @@ module sw_to_angle(
         else begin
             case(num) 
                 4'd0: begin
-                    if(index == 3'd6) begin
+                    if(index == 4'd8) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -329,7 +335,7 @@ module sw_to_angle(
                     end
                 end
                 4'd1: begin
-                    if(index == 3'd2) begin
+                    if(index == 4'd3) begin
                         nextIsWriting = 1'b0;
                     end 
                     else begin
@@ -337,7 +343,7 @@ module sw_to_angle(
                     end
                 end
                 4'd2: begin
-                    if(index == 3'd5) begin
+                    if(index == 4'd6) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -345,7 +351,7 @@ module sw_to_angle(
                     end
                 end
                 4'd3: begin
-                    if(index == 3'd7) begin
+                    if(index == 4'd8) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -353,7 +359,7 @@ module sw_to_angle(
                     end
                 end
                 4'd4: begin
-                    if(index == 3'd5) begin
+                    if(index == 4'd6) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -361,7 +367,7 @@ module sw_to_angle(
                     end
                 end
                 4'd5: begin
-                    if(index == 3'd7) begin
+                    if(index == 4'd8) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -369,7 +375,7 @@ module sw_to_angle(
                     end
                 end
                 4'd6: begin
-                    if(index == 3'd6)  begin
+                    if(index == 4'd7)  begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -377,7 +383,7 @@ module sw_to_angle(
                     end
                 end
                 4'd7: begin
-                    if(index == 3'd5) begin
+                    if(index == 4'd6) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -385,7 +391,7 @@ module sw_to_angle(
                     end
                 end
                 4'd8: begin
-                    if(index == 3'd7) begin
+                    if(index == 4'd8) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -393,7 +399,7 @@ module sw_to_angle(
                     end
                 end
                 4'd9: begin
-                    if(index == 3'd7) begin
+                    if(index == 4'd7) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -401,7 +407,7 @@ module sw_to_angle(
                     end
                 end
                 default: begin
-                    if(index == 3'd6) begin
+                    if(index == 4'd7) begin
                         nextIsWriting = 1'b0;
                     end
                     else begin
@@ -414,96 +420,96 @@ module sw_to_angle(
 
     always @(posedge clk_write, posedge rst) begin
         if(rst) begin
-            index <= 3'd0;
+            index <= 4'd0;
         end
         else if(finish_writing == 1'b1) begin
-            index <= 3'd0;
+            index <= 4'd0;
         end
         else begin
             case(num) 
                 4'd0: begin
-                    if(index == 3'd6) begin
-                        index <= 3'd0;
+                    if(index == 4'd8) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd1: begin
-                    if(index == 3'd2) begin
-                        index <= 3'd0;
+                    if(index == 4'd3) begin
+                        index <= 4'd0;
                     end 
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd2: begin
-                    if(index == 3'd5) begin
-                        index <= 3'd0;
+                    if(index == 4'd6) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd3: begin
-                    if(index == 3'd7) begin
-                        index <= 3'd0;
+                    if(index == 4'd8) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd4: begin
-                    if(index == 3'd5) begin
-                        index <= 3'd0;
+                    if(index == 4'd6) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd5: begin
-                    if(index == 3'd7) begin
-                        index <= 3'd0;
+                    if(index == 4'd8) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd6: begin
-                    if(index == 3'd6)  begin
-                        index <= 3'd0;
+                    if(index == 4'd7)  begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd7: begin
-                    if(index == 3'd5) begin
-                        index <= 3'd0;
+                    if(index == 4'd6) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd8: begin
-                    if(index == 3'd7) begin
-                        index <= 3'd0;
+                    if(index == 4'd8) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 4'd9: begin
-                    if(index == 3'd7) begin
-                        index <= 3'd0;
+                    if(index == 4'd7) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
                     end
                 end
                 default: begin
-                    if(index == 3'd6) begin
-                        index <= 3'd0;
+                    if(index == 4'd7) begin
+                        index <= 4'd0;
                     end
                     else begin
                         index <= index + 1'b1;
@@ -532,13 +538,16 @@ module sw_to_angle(
 
             if(cur_angle_fb[8:7] == 2'b00)
                 angle_left = 7'b0;
-            else if(nextIsWriting == 1'b0) begin
-                angle_left = 7'b0001000;
+            else if(nextIsWriting == 1'b0 || index == 4'd0) begin
+                angle_left = 7'b0001010;
+            end
+            else if(index == 4'd1) begin
+                angle_left = 7'b0;
             end
             // else if(cur_angle_fb[8:7] == 2'b10 && cur_angle_fb[6:0] == 7'b0001100)
             //     angle_left = 7'b0000011;
             else
-                angle_left = 7'b0;
+                angle_left = angle_left;
             
             if(cur_angle_fb[8:7] == 2'b00)
                 angle_right = 7'b0;

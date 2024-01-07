@@ -86,7 +86,7 @@ wire clk_div22;
 // Servo
 // reg claw, left_right, bottom;
 // debug
-wire [2:0] index;
+wire [3:0] index;
 
 clock_divider #(.n(22)) clock_22(.clk(clk), .en(1), .clk_div(clk_div22));
 assign freq_outL = 50000000 / freqL;
@@ -136,6 +136,7 @@ music music_00 (
 	.ibeatNum(ibeatNum),
 	.state(state),
 	.rst(rst),
+	.finish_writing(finish_writing),
 	.clk(clk),
 	.toneL(freqL),
 	.toneR(freqR)
@@ -147,6 +148,7 @@ Servo_interface servo_claw (
 	.clk(clk),
 	.en(state == WRITING),
 	.num(num),
+	.state(state),
 	.pwm_claw(pwm_claw),
 	.pwm_left(pwm_left),
 	.pwm_right(pwm_right),
@@ -155,7 +157,7 @@ Servo_interface servo_claw (
 	.index(index)
 );
 
-parameter [8:0] KEY_CODES [0:9] = {
+parameter [8:0] KEY_CODES [0:10] = {
 	9'b0_0100_0101,	// 0 => 45
 	9'b0_0001_0110,	// 1 => 16
 	9'b0_0001_1110,	// 2 => 1E
@@ -165,7 +167,8 @@ parameter [8:0] KEY_CODES [0:9] = {
 	9'b0_0011_0110,	// 6 => 36
 	9'b0_0011_1101,	// 7 => 3D
 	9'b0_0011_1110,	// 8 => 3E
-	9'b0_0100_0110	// 9 => 46
+	9'b0_0100_0110,	// 9 => 46
+	9'b0_0110_0110 // BACK
 };
 // state transition
 always @* begin
@@ -278,7 +281,7 @@ always @(*) begin
                     next_num[7:4] = num[3:0];
                     next_num[3:0] = key_num;
                 end
-                else if(last_change == 9'b0_0110_0110) begin //BACK
+                else if(key_down[last_change] == 1'b1 && last_change == 9'b0_0110_0110 && isPressed == 1'b0) begin //BACK
                     next_num[3:0] = num[7:4];
                     next_num[7:4] = num[11:8];
                     next_num[11:8] = num[15:12];
@@ -333,7 +336,7 @@ always @(*) begin
 	else begin
 		if(state == TYPING) begin
 			next_isPressed = 1'b0;
-			for(i = 0; i < 10; i = i + 1) begin
+			for(i = 0; i < 11; i = i + 1) begin
 				if(key_down[KEY_CODES[i]] == 1'b1)
 					next_isPressed = 1'b1;
 				else
@@ -411,6 +414,7 @@ module music (
 	input [7:0] ibeatNum,
     input rst,
     input clk,
+	input finish_writing,
     input [2:0] state,
 	output reg [25:0] toneL,
     output reg [25:0] toneR
