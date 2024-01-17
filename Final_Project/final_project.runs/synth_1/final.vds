@@ -2,16 +2,16 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Mon Jan  1 19:16:42 2024
-# Process ID: 33492
-# Current directory: C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1
+# Start of session at: Sun Jan  7 23:24:38 2024
+# Process ID: 29144
+# Current directory: C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1
 # Command line: vivado.exe -log final.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source final.tcl
-# Log file: C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1/final.vds
-# Journal file: C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1\vivado.jou
+# Log file: C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1/final.vds
+# Journal file: C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source final.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
-INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/sunny/Vivado/HDL_Final/Final_Project/ip/Keyboard-Controller'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Joan/OneDrive/HDL_Final/Final_Project/ip/Keyboard-Controller'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.2/data/ip'.
 Command: synth_design -top final -part xc7a35tcpg236-1
 Starting synth_design
@@ -19,22 +19,22 @@ Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
 INFO: [Device 21-403] Loading part xc7a35tcpg236-1
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 36092 
+INFO: Helper process launched with PID 11976 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 778.125 ; gain = 234.398
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 778.730 ; gain = 234.457
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'final' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:24]
+INFO: [Synth 8-6157] synthesizing module 'final' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:35]
 	Parameter IDLE bound to: 2'b00 
 	Parameter TYPING bound to: 2'b01 
 	Parameter WRITING bound to: 2'b10 
-	Parameter KEY_CODES bound to: 198'b001000101000010110000011110000100110000100101000101110000110110000111101000111110001000110001110000001101001001110010001111010001101011001110011001110100001101100001110101001111101001100110001011010 
-INFO: [Synth 8-6157] synthesizing module 'clock_divider' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+	Parameter KEY_CODES bound to: 99'b001000101000010110000011110000100110000100101000101110000110110000111101000111110001000110001100110 
+INFO: [Synth 8-6157] synthesizing module 'clock_divider' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
 	Parameter n bound to: 14 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'clock_divider' (1#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
-INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized0' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider' (1#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized0' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
 	Parameter n bound to: 22 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized0' (1#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
-INFO: [Synth 8-6157] synthesizing module 'KeyboardDecoder' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized0' (1#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'KeyboardDecoder' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:1]
 	Parameter INIT bound to: 2'b00 
 	Parameter WAIT_FOR_SIGNAL bound to: 2'b01 
 	Parameter GET_SIGNAL_DOWN bound to: 2'b10 
@@ -42,33 +42,78 @@ INFO: [Synth 8-6157] synthesizing module 'KeyboardDecoder' [C:/Users/sunny/Vivad
 	Parameter IS_INIT bound to: 8'b10101010 
 	Parameter IS_EXTEND bound to: 8'b11100000 
 	Parameter IS_BREAK bound to: 8'b11110000 
-INFO: [Synth 8-6157] synthesizing module 'KeyboardCtrl_0' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1/.Xil/Vivado-33492-Yi-Chen/realtime/KeyboardCtrl_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'KeyboardCtrl_0' (2#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1/.Xil/Vivado-33492-Yi-Chen/realtime/KeyboardCtrl_0_stub.v:6]
-INFO: [Synth 8-6157] synthesizing module 'one_pulse' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/one_pulse.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'one_pulse' (3#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/one_pulse.v:1]
-INFO: [Synth 8-226] default block is never used [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:64]
-INFO: [Synth 8-6155] done synthesizing module 'KeyboardDecoder' (4#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:1]
-INFO: [Synth 8-6157] synthesizing module 'player_control' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:1]
+INFO: [Synth 8-6157] synthesizing module 'KeyboardCtrl_0' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1/.Xil/Vivado-29144-LAPTOP-7A45SF4Q/realtime/KeyboardCtrl_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'KeyboardCtrl_0' (2#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1/.Xil/Vivado-29144-LAPTOP-7A45SF4Q/realtime/KeyboardCtrl_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'one_pulse' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/one_pulse.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'one_pulse' (3#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/one_pulse.v:1]
+INFO: [Synth 8-226] default block is never used [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:64]
+INFO: [Synth 8-6155] done synthesizing module 'KeyboardDecoder' (4#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/KeyboardDecoder.v:1]
+INFO: [Synth 8-6157] synthesizing module 'player_control' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:1]
 	Parameter IDLE bound to: 2'b00 
 	Parameter TYPING bound to: 2'b01 
 	Parameter WRITING bound to: 2'b10 
-INFO: [Synth 8-6155] done synthesizing module 'player_control' (5#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:1]
-WARNING: [Synth 8-689] width (3) of port connection 'state' does not match port width (1) of module 'player_control' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:86]
-INFO: [Synth 8-6157] synthesizing module 'speaker_control' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:1]
-INFO: [Synth 8-226] default block is never used [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:45]
-INFO: [Synth 8-6155] done synthesizing module 'speaker_control' (6#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:1]
-INFO: [Synth 8-6157] synthesizing module 'note_gen' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/note_gen.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'note_gen' (7#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/note_gen.v:1]
-INFO: [Synth 8-6157] synthesizing module 'music' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:388]
+	Parameter LEN_start bound to: 60 - type: integer 
+	Parameter LEN_end bound to: 192 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'player_control' (5#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:1]
+INFO: [Synth 8-6157] synthesizing module 'speaker_control' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:1]
+INFO: [Synth 8-226] default block is never used [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:45]
+INFO: [Synth 8-6155] done synthesizing module 'speaker_control' (6#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/speaker_control.v:1]
+INFO: [Synth 8-6157] synthesizing module 'note_gen' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/note_gen.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'note_gen' (7#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/note_gen.v:1]
+INFO: [Synth 8-6157] synthesizing module 'music' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:413]
 	Parameter IDLE bound to: 2'b00 
 	Parameter TYPING bound to: 2'b01 
 	Parameter WRITING bound to: 2'b10 
-INFO: [Synth 8-6155] done synthesizing module 'music' (8#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:388]
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:187]
-INFO: [Synth 8-6155] done synthesizing module 'final' (9#1) [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:24]
+INFO: [Synth 8-6155] done synthesizing module 'music' (8#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:413]
+INFO: [Synth 8-6157] synthesizing module 'Servo_interface' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:3]
+INFO: [Synth 8-6157] synthesizing module 'sw_to_angle' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:176]
+	Parameter LEFT bound to: 9'b110000100 
+	Parameter RIGHT bound to: 9'b110000000 
+	Parameter FRONT bound to: 9'b100001010 
+	Parameter MIDDLE bound to: 9'b100000101 
+	Parameter BACK bound to: 9'b100000000 
+	Parameter IDLE bound to: 9'b000000000 
+	Parameter UP bound to: 9'b010000101 
+	Parameter DOWN bound to: 9'b010000000 
+	Parameter ZERO_lr bound to: 81'b000000000000000000000000000000000000110000100110000100110000000110000100110000100 
+	Parameter ZERO_fb bound to: 81'b000000000100001010100000000100001010100001010100000000100000000100000000100000000 
+	Parameter ONE_lr bound to: 36'b000000000000000000000000000000000000 
+	Parameter ONE_fb bound to: 36'b000000000100001010100000000000000000 
+	Parameter TWO_lr bound to: 63'b000000000110000100110000100110000000110000000110000100110000100 
+	Parameter TWO_fb bound to: 63'b000000000000000000100000101100000101100001010100001010100001010 
+	Parameter THREE_lr bound to: 81'b000000000110000100110000000110000000110000100110000000110000000110000100110000100 
+	Parameter THREE_fb bound to: 81'b000000000000000000000000000100000101100000101100000101100001010100001010100001010 
+	Parameter FOUR_lr bound to: 63'b000000000000000000000000000000000000110000100110000100110000100 
+	Parameter FOUR_fb bound to: 63'b000000000100001010100000000100000101100000101100001010100001010 
+	Parameter FIVE_lr bound to: 81'b000000000110000100110000000110000000110000100110000100110000000110000100110000100 
+	Parameter FIVE_fb bound to: 81'b000000000000000000000000000100000101100000101100001010100001010100001010100001010 
+	Parameter SIX_lr bound to: 72'b000000000110000100110000100110000100110000000110000000110000100110000100 
+	Parameter SIX_fb bound to: 72'b000000000000000000100001010100000000100000000100000101100000101100000101 
+	Parameter SEVEN_lr bound to: 63'b000000000000000000000000000000000000110000100110000100110000100 
+	Parameter SEVEN_fb bound to: 63'b000000000100001010100000000100001010100001010100000101100000101 
+	Parameter EIGHT_lr bound to: 81'b000000000000000000110000100110000100110000000110000000110000100110000100110000100 
+	Parameter EIGHT_fb bound to: 81'b000000000100000101100000101100001010100001010100000000100000000100000101100000101 
+	Parameter NINE_lr bound to: 72'b000000000000000000110000100110000100110000000110000000110000100110000100 
+	Parameter NINE_fb bound to: 72'b000000000100000101100000101100001010100001010100000000100000000100000000 
+INFO: [Synth 8-6155] done synthesizing module 'sw_to_angle' (9#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:176]
+INFO: [Synth 8-6157] synthesizing module 'clock_divider__parameterized1' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+	Parameter n bound to: 27 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'clock_divider__parameterized1' (9#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/clock_divider.v:1]
+INFO: [Synth 8-6157] synthesizing module 'counter' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:148]
+INFO: [Synth 8-6155] done synthesizing module 'counter' (10#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:148]
+INFO: [Synth 8-6155] done synthesizing module 'Servo_interface' (11#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:3]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:216]
+INFO: [Synth 8-6155] done synthesizing module 'final' (12#1) [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:35]
+WARNING: [Synth 8-3331] design sw_to_angle has unconnected port sw[3]
+WARNING: [Synth 8-3331] design sw_to_angle has unconnected port sw[2]
+WARNING: [Synth 8-3331] design sw_to_angle has unconnected port sw[1]
+WARNING: [Synth 8-3331] design sw_to_angle has unconnected port en
+WARNING: [Synth 8-3331] design sw_to_angle has unconnected port clk
 WARNING: [Synth 8-3331] design music has unconnected port clk
+WARNING: [Synth 8-3331] design music has unconnected port finish_writing
+WARNING: [Synth 8-3331] design final has unconnected port btnL
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 851.367 ; gain = 307.641
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 852.363 ; gain = 308.090
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -81,61 +126,60 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 851.367 ; gain = 307.641
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 852.363 ; gain = 308.090
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 851.367 ; gain = 307.641
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 852.363 ; gain = 308.090
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 851.367 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.025 . Memory (MB): peak = 852.363 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'kbd/inst'
-Finished Parsing XDC File [c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'kbd/inst'
-Parsing XDC File [C:/Users/sunny/Vivado/HDL_Final/Final_Project/Basys3_Constraints.xdc]
-Finished Parsing XDC File [C:/Users/sunny/Vivado/HDL_Final/Final_Project/Basys3_Constraints.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/sunny/Vivado/HDL_Final/Final_Project/Basys3_Constraints.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/final_propImpl.xdc].
+Parsing XDC File [c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'kbd/inst'
+Finished Parsing XDC File [c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc] for cell 'kbd/inst'
+Parsing XDC File [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/Basys3_Constraints.xdc]
+Finished Parsing XDC File [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/Basys3_Constraints.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/Basys3_Constraints.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/final_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/final_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 954.227 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 956.176 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 954.227 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 956.176 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 956.176 ; gain = 411.902
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 956.176 ; gain = 411.902
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
-Applied set_property IO_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 1).
-Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 2).
-Applied set_property IO_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 3).
-Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 4).
+Applied set_property IO_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 1).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_CLK. (constraint file  c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 2).
+Applied set_property IO_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 3).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for PS2_DATA. (constraint file  c:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/ip/KeyboardCtrl_0/KeyboardCtrl_0/KeyboardCtrl_0_in_context.xdc, line 4).
 Applied set_property DONT_TOUCH = true for kbd/inst. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:15 . Memory (MB): peak = 956.176 ; gain = 411.902
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'KeyboardDecoder'
-INFO: [Synth 8-5818] HDL ADVISOR - The operator resource <adder> is shared. To prevent sharing consider applying a KEEP on the output of the operator [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:35]
 INFO: [Synth 8-5546] ROM "toneL" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "toneR" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'final'
 INFO: [Synth 8-802] inferred FSM for state register 'digit_reg' in module 'final'
 INFO: [Synth 8-5546] ROM "key_num" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5544] ROM "next_led" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "next_led" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
 INFO: [Synth 8-5544] ROM "digit" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
 INFO: [Synth 8-5546] ROM "key_num" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5544] ROM "next_led" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "next_led" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
 INFO: [Synth 8-5544] ROM "digit" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
 INFO: [Synth 8-5544] ROM "display" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
 ---------------------------------------------------------------------------------------------------
@@ -147,18 +191,20 @@ INFO: [Synth 8-5544] ROM "display" won't be mapped to Block RAM because address 
             WAIT_RELEASE |                               11 |                               11
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'KeyboardDecoder'
-WARNING: [Synth 8-327] inferring latch for variable 'LEN_reg' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/player_control.v:16]
+WARNING: [Synth 8-327] inferring latch for variable 'angle_left_reg' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:540]
+WARNING: [Synth 8-327] inferring latch for variable 'angle_right_reg' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:553]
+WARNING: [Synth 8-327] inferring latch for variable 'angle_bottom_reg' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:560]
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
-                    IDLE |                              001 |                              000
-                  TYPING |                              010 |                              001
-                 WRITING |                              100 |                              010
+                    IDLE |                              001 |                               00
+                  TYPING |                              010 |                               01
+                 WRITING |                              100 |                               10
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'final'
-WARNING: [Synth 8-327] inferring latch for variable 'next_num_reg' [C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:234]
+WARNING: [Synth 8-327] inferring latch for variable 'next_num_reg' [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/new/final.v:270]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:16 . Memory (MB): peak = 956.176 ; gain = 411.902
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -171,30 +217,48 @@ Start RTL Component Statistics
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
-	   3 Input     14 Bit       Adders := 1     
-	   2 Input      9 Bit       Adders := 1     
+	   3 Input     21 Bit       Adders := 4     
+	   2 Input      9 Bit       Adders := 3     
+	   2 Input      8 Bit       Adders := 2     
+	   2 Input      7 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 2     
 +---Registers : 
-	              126 Bit    Registers := 1     
+	              111 Bit    Registers := 1     
 	               16 Bit    Registers := 4     
 	               10 Bit    Registers := 1     
 	                9 Bit    Registers := 1     
-	                4 Bit    Registers := 1     
-	                1 Bit    Registers := 9     
+	                8 Bit    Registers := 3     
+	                4 Bit    Registers := 3     
+	                1 Bit    Registers := 15    
 +---Muxes : 
-	   2 Input    126 Bit        Muxes := 1     
+	   2 Input    111 Bit        Muxes := 1     
+	   2 Input     26 Bit        Muxes := 4     
 	  61 Input     26 Bit        Muxes := 2     
+	 195 Input     26 Bit        Muxes := 2     
 	   2 Input     16 Bit        Muxes := 8     
 	   4 Input     10 Bit        Muxes := 1     
-	  21 Input      4 Bit        Muxes := 1     
-	   2 Input      4 Bit        Muxes := 5     
+	   9 Input      9 Bit        Muxes := 8     
+	   4 Input      9 Bit        Muxes := 1     
+	   7 Input      9 Bit        Muxes := 5     
+	   8 Input      9 Bit        Muxes := 4     
+	   2 Input      8 Bit        Muxes := 3     
+	   3 Input      8 Bit        Muxes := 2     
+	   3 Input      7 Bit        Muxes := 1     
+	   2 Input      7 Bit        Muxes := 2     
+	   2 Input      6 Bit        Muxes := 3     
+	   2 Input      4 Bit        Muxes := 13    
+	   4 Input      4 Bit        Muxes := 1     
+	  11 Input      4 Bit        Muxes := 1     
 	   5 Input      4 Bit        Muxes := 2     
 	   4 Input      3 Bit        Muxes := 1     
 	   4 Input      2 Bit        Muxes := 1     
 	   2 Input      2 Bit        Muxes := 3     
-	   2 Input      1 Bit        Muxes := 10    
-	   4 Input      1 Bit        Muxes := 7     
-	  22 Input      1 Bit        Muxes := 1     
-	   3 Input      1 Bit        Muxes := 3     
+	  11 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 24    
+	   4 Input      1 Bit        Muxes := 9     
+	   3 Input      1 Bit        Muxes := 4     
+	  11 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -204,19 +268,22 @@ Start RTL Hierarchical Component Statistics
 Hierarchical RTL Component report 
 Module final 
 Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      4 Bit       Adders := 1     
 +---Registers : 
 	               16 Bit    Registers := 2     
 	                4 Bit    Registers := 1     
 	                1 Bit    Registers := 1     
 +---Muxes : 
 	   2 Input     16 Bit        Muxes := 4     
-	  21 Input      4 Bit        Muxes := 1     
+	   3 Input      8 Bit        Muxes := 1     
+	  11 Input      4 Bit        Muxes := 1     
 	   2 Input      4 Bit        Muxes := 5     
 	   5 Input      4 Bit        Muxes := 2     
 	   4 Input      3 Bit        Muxes := 1     
-	  22 Input      1 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 3     
-	   3 Input      1 Bit        Muxes := 3     
+	   2 Input      1 Bit        Muxes := 6     
+	  11 Input      1 Bit        Muxes := 1     
+	   3 Input      1 Bit        Muxes := 1     
 Module one_pulse 
 Detailed RTL Component Info : 
 +---Registers : 
@@ -224,11 +291,11 @@ Detailed RTL Component Info :
 Module KeyboardDecoder 
 Detailed RTL Component Info : 
 +---Registers : 
-	              126 Bit    Registers := 1     
+	              111 Bit    Registers := 1     
 	               10 Bit    Registers := 1     
 	                1 Bit    Registers := 4     
 +---Muxes : 
-	   2 Input    126 Bit        Muxes := 1     
+	   2 Input    111 Bit        Muxes := 1     
 	   4 Input     10 Bit        Muxes := 1     
 	   4 Input      2 Bit        Muxes := 1     
 	   2 Input      2 Bit        Muxes := 3     
@@ -237,7 +304,15 @@ Detailed RTL Component Info :
 Module player_control 
 Detailed RTL Component Info : 
 +---Adders : 
-	   3 Input     14 Bit       Adders := 1     
+	   2 Input      9 Bit       Adders := 2     
+	   2 Input      8 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 1     
++---Registers : 
+	                8 Bit    Registers := 2     
++---Muxes : 
+	   2 Input      8 Bit        Muxes := 3     
+	   3 Input      8 Bit        Muxes := 1     
+	   2 Input      6 Bit        Muxes := 3     
 Module speaker_control 
 Detailed RTL Component Info : 
 +---Adders : 
@@ -254,7 +329,42 @@ Detailed RTL Component Info :
 Module music 
 Detailed RTL Component Info : 
 +---Muxes : 
+	   2 Input     26 Bit        Muxes := 4     
 	  61 Input     26 Bit        Muxes := 2     
+	 195 Input     26 Bit        Muxes := 2     
+Module sw_to_angle 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
+	   2 Input      7 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	                8 Bit    Registers := 1     
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   9 Input      9 Bit        Muxes := 8     
+	   4 Input      9 Bit        Muxes := 1     
+	   7 Input      9 Bit        Muxes := 5     
+	   8 Input      9 Bit        Muxes := 4     
+	   3 Input      7 Bit        Muxes := 1     
+	   2 Input      7 Bit        Muxes := 2     
+	   2 Input      4 Bit        Muxes := 5     
+	   4 Input      4 Bit        Muxes := 1     
+	  11 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 8     
+	   4 Input      1 Bit        Muxes := 2     
+Module Servo_interface 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     21 Bit       Adders := 4     
++---Registers : 
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 3     
+	   3 Input      1 Bit        Muxes := 3     
+	   2 Input      1 Bit        Muxes := 3     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -273,17 +383,33 @@ Start Cross Boundary and Area Optimization
 Warning: Parallel synthesis criteria is not met 
 INFO: [Synth 8-5544] ROM "digit" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
 INFO: [Synth 8-5587] ROM size for "key_num" is below threshold of ROM address width. It will be mapped to LUTs
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[0]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[1]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[2]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[3]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[4]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[5]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[6]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[7]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[8]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3886] merging instance 'playerCtrl_00/LEN_reg[10]' (LDC) to 'playerCtrl_00/LEN_reg[11]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\playerCtrl_00/LEN_reg[11] )
+DSP Report: Generating DSP value_claw0, operation Mode is: (A:0x3b0)*B.
+DSP Report: operator value_claw0 is absorbed into DSP value_claw0.
+DSP Report: Generating DSP value_left0, operation Mode is: (A:0x3b0)*B.
+DSP Report: operator value_left0 is absorbed into DSP value_left0.
+DSP Report: Generating DSP value_right0, operation Mode is: (A:0x3b0)*B.
+DSP Report: operator value_right0 is absorbed into DSP value_right0.
+DSP Report: Generating DSP value_bottom0, operation Mode is: (A:0x3b0)*B.
+DSP Report: operator value_bottom0 is absorbed into DSP value_bottom0.
+WARNING: [Synth 8-3331] design Servo_interface has unconnected port sw[3]
+WARNING: [Synth 8-3331] design Servo_interface has unconnected port sw[2]
+WARNING: [Synth 8-3331] design Servo_interface has unconnected port sw[1]
+WARNING: [Synth 8-3331] design music has unconnected port clk
+WARNING: [Synth 8-3331] design music has unconnected port finish_writing
+WARNING: [Synth 8-3331] design final has unconnected port btnL
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_right_reg[0]' (LDC) to 'servo_claw/convert/angle_right_reg[2]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_right_reg[1]' (LDC) to 'servo_claw/convert/angle_right_reg[3]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_right_reg[4]' (LDC) to 'servo_claw/convert/angle_right_reg[5]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_right_reg[5]' (LDC) to 'servo_claw/convert/angle_right_reg[6]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\servo_claw/convert/angle_right_reg[6] )
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_left_reg[0]' (LDC) to 'servo_claw/convert/angle_left_reg[2]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_left_reg[1]' (LDCP) to 'servo_claw/convert/angle_left_reg[3]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_left_reg[2]' (LDC) to 'servo_claw/convert/angle_left_reg[4]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_left_reg[4]' (LDC) to 'servo_claw/convert/angle_left_reg[5]'
+INFO: [Synth 8-3886] merging instance 'servo_claw/convert/angle_left_reg[5]' (LDC) to 'servo_claw/convert/angle_left_reg[6]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\servo_claw/convert/angle_left_reg[6] )
+INFO: [Synth 8-3886] merging instance 'playerCtrl_00/ibeat1_reg[6]' (FDC) to 'playerCtrl_00/ibeat1_reg[7]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\playerCtrl_00/ibeat1_reg[7] )
 INFO: [Synth 8-3886] merging instance 'sc/audio_right_reg[1]' (FDC) to 'sc/audio_right_reg[12]'
 INFO: [Synth 8-3886] merging instance 'sc/audio_right_reg[2]' (FDC) to 'sc/audio_right_reg[12]'
 INFO: [Synth 8-3886] merging instance 'sc/audio_right_reg[3]' (FDC) to 'sc/audio_right_reg[12]'
@@ -312,22 +438,46 @@ INFO: [Synth 8-3886] merging instance 'sc/audio_left_reg[11]' (FDC) to 'sc/audio
 INFO: [Synth 8-3886] merging instance 'sc/audio_left_reg[12]' (FDC) to 'sc/audio_right_reg[0]'
 INFO: [Synth 8-3886] merging instance 'sc/audio_left_reg[14]' (FDC) to 'sc/audio_left_reg[15]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\sc/audio_right_reg[0] )
-INFO: [Synth 8-3886] merging instance 'LED_reg[1]' (FDC) to 'LED_reg[2]'
-INFO: [Synth 8-3886] merging instance 'LED_reg[2]' (FDC) to 'LED_reg[3]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\LED_reg[3] )
 INFO: [Synth 8-3886] merging instance 'LED_reg[4]' (FDC) to 'LED_reg[5]'
 INFO: [Synth 8-3886] merging instance 'LED_reg[5]' (FDC) to 'LED_reg[6]'
 INFO: [Synth 8-3886] merging instance 'LED_reg[6]' (FDC) to 'LED_reg[7]'
 INFO: [Synth 8-3886] merging instance 'LED_reg[8]' (FDC) to 'LED_reg[9]'
 INFO: [Synth 8-3886] merging instance 'LED_reg[9]' (FDC) to 'LED_reg[10]'
 INFO: [Synth 8-3886] merging instance 'LED_reg[10]' (FDC) to 'LED_reg[11]'
-INFO: [Synth 8-3886] merging instance 'LED_reg[12]' (FDC) to 'LED_reg[13]'
-INFO: [Synth 8-3886] merging instance 'LED_reg[13]' (FDC) to 'LED_reg[14]'
-INFO: [Synth 8-3886] merging instance 'LED_reg[14]' (FDC) to 'LED_reg[15]'
-WARNING: [Synth 8-3332] Sequential element (playerCtrl_00/LEN_reg[11]) is unused and will be removed from module final.
+INFO: [Synth 8-3886] merging instance 'LED_reg[12]' (FDP) to 'LED_reg[13]'
+INFO: [Synth 8-3886] merging instance 'LED_reg[13]' (FDP) to 'LED_reg[14]'
+INFO: [Synth 8-3886] merging instance 'LED_reg[14]' (FDP) to 'LED_reg[15]'
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_left_reg[6]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_right_reg[6]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[6]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[5]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[4]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[3]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[2]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[1]) is unused and will be removed from module final.
+WARNING: [Synth 8-3332] Sequential element (servo_claw/convert/angle_bottom_reg[0]) is unused and will be removed from module final.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 956.176 ; gain = 411.902
 ---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping	Report (see note below)
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name     | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Servo_interface | (A:0x3b0)*B | 7      | 10     | -      | -      | 17     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|Servo_interface | (A:0x3b0)*B | 7      | 10     | -      | -      | 17     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|Servo_interface | (A:0x3b0)*B | 7      | 10     | -      | -      | 17     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|Servo_interface | (A:0x3b0)*B | 7      | 10     | -      | -      | 17     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:300]
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -338,13 +488,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:21 . Memory (MB): peak = 954.227 ; gain = 410.500
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:35 ; elapsed = 00:00:38 . Memory (MB): peak = 981.949 ; gain = 437.676
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:23 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Timing Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:00:47 . Memory (MB): peak = 1093.215 ; gain = 548.941
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -355,8 +505,9 @@ Report RTL Partitions:
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.srcs/sources_1/imports/ServoControlwithPmodCON3/Servo_interface.v:300]
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:18 ; elapsed = 00:00:24 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Technology Mapping : Time (s): cpu = 00:00:46 ; elapsed = 00:00:49 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -380,13 +531,13 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished IO Insertion : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -405,25 +556,25 @@ Report Check Netlist:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -442,62 +593,67 @@ Report Cell Usage:
 +------+---------------+------+
 |1     |KeyboardCtrl_0 |     1|
 |2     |BUFG           |     1|
-|3     |CARRY4         |   486|
-|4     |LUT1           |    29|
-|5     |LUT2           |   886|
-|6     |LUT3           |   803|
-|7     |LUT4           |   223|
-|8     |LUT5           |    53|
-|9     |LUT6           |   115|
-|10    |MUXF7          |    13|
-|11    |MUXF8          |     6|
-|12    |FDCE           |   228|
-|13    |FDPE           |     9|
-|14    |FDRE           |    46|
-|15    |LDC            |     9|
+|3     |CARRY4         |   432|
+|4     |DSP48E1        |     4|
+|5     |LUT1           |    20|
+|6     |LUT2           |   565|
+|7     |LUT3           |   607|
+|8     |LUT4           |   144|
+|9     |LUT5           |    90|
+|10    |LUT6           |   808|
+|11    |FDCE           |   234|
+|12    |FDPE           |    13|
+|13    |FDRE           |    93|
+|14    |LDC            |    10|
+|15    |LDCP           |     1|
 |16    |LDP            |     8|
-|17    |IBUF           |     5|
-|18    |OBUF           |    31|
+|17    |IBUF           |     4|
+|18    |OBUF           |    35|
 +------+---------------+------+
 
 Report Instance Areas: 
 +------+----------------+------------------------------+------+
 |      |Instance        |Module                        |Cells |
 +------+----------------+------------------------------+------+
-|1     |top             |                              |  2963|
+|1     |top             |                              |  3081|
 |2     |  clock_22      |clock_divider__parameterized0 |    29|
 |3     |  div1          |clock_divider                 |    19|
-|4     |  kbd           |KeyboardDecoder               |   439|
+|4     |  kbd           |KeyboardDecoder               |   394|
 |5     |    op          |one_pulse                     |     4|
-|6     |  noteGen_00    |note_gen                      |   149|
-|7     |  playerCtrl_00 |player_control                |  1494|
-|8     |  sc            |speaker_control               |   159|
+|6     |  noteGen_00    |note_gen                      |   124|
+|7     |  playerCtrl_00 |player_control                |  1996|
+|8     |  sc            |speaker_control               |    42|
+|9     |  servo_claw    |Servo_interface               |   348|
+|10    |    convert     |sw_to_angle                   |   109|
+|11    |    count       |counter                       |   152|
+|12    |    divider     |clock_divider__parameterized1 |    36|
 +------+----------------+------------------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:51 ; elapsed = 00:00:53 . Memory (MB): peak = 1094.246 ; gain = 549.973
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 3 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:17 ; elapsed = 00:00:26 . Memory (MB): peak = 1010.133 ; gain = 363.547
-Synthesis Optimization Complete : Time (s): cpu = 00:00:21 ; elapsed = 00:00:27 . Memory (MB): peak = 1010.133 ; gain = 466.406
+Synthesis finished with 0 errors, 0 critical warnings and 19 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:43 ; elapsed = 00:00:51 . Memory (MB): peak = 1094.246 ; gain = 446.160
+Synthesis Optimization Complete : Time (s): cpu = 00:00:51 ; elapsed = 00:00:54 . Memory (MB): peak = 1094.246 ; gain = 549.973
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.045 . Memory (MB): peak = 1010.133 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 522 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.056 . Memory (MB): peak = 1094.246 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 455 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1010.133 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1094.246 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 17 instances were transformed.
-  LDC => LDCE: 9 instances
+  A total of 19 instances were transformed.
+  LDC => LDCE: 10 instances
+  LDCP => LDCP (GND, LDCE, LUT3(x2), VCC): 1 instance 
   LDP => LDPE: 8 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-106 Infos, 5 Warnings, 0 Critical Warnings and 0 Errors encountered.
+114 Infos, 27 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:24 ; elapsed = 00:00:32 . Memory (MB): peak = 1010.133 ; gain = 711.574
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1010.133 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:57 ; elapsed = 00:01:00 . Memory (MB): peak = 1094.246 ; gain = 796.184
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1094.246 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint 'C:/Users/sunny/Vivado/HDL_Final/Final_Project/final_project.runs/synth_1/final.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Joan/OneDrive/HDL_Final/Final_Project/final_project.runs/synth_1/final.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file final_utilization_synth.rpt -pb final_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon Jan  1 19:17:17 2024...
+INFO: [Common 17-206] Exiting Vivado at Sun Jan  7 23:25:44 2024...

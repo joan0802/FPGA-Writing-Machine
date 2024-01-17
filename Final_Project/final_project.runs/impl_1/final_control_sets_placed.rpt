@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-| Date         : Mon Jan  1 19:18:35 2024
-| Host         : Yi-Chen running 64-bit major release  (build 9200)
+| Date         : Sun Jan  7 23:27:14 2024
+| Host         : LAPTOP-7A45SF4Q running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file final_control_sets_placed.rpt
 | Design       : final
 | Device       : xc7a35t
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    14 |
-|    Minimum number of control sets                        |    14 |
+| Total control sets                                       |    20 |
+|    Minimum number of control sets                        |    20 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    36 |
+| Unused register locations in slices containing registers |    57 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,15 +39,15 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    14 |
-| >= 0 to < 4        |     1 |
-| >= 4 to < 6        |     2 |
-| >= 6 to < 8        |     0 |
+| Total control sets |    20 |
+| >= 0 to < 4        |     2 |
+| >= 4 to < 6        |     3 |
+| >= 6 to < 8        |     2 |
 | >= 8 to < 10       |     3 |
 | >= 10 to < 12      |     2 |
 | >= 12 to < 14      |     1 |
 | >= 14 to < 16      |     0 |
-| >= 16              |     5 |
+| >= 16              |     7 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -58,11 +58,11 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              46 |           13 |
-| No           | No                    | Yes                    |             166 |           58 |
-| No           | Yes                   | No                     |              17 |            8 |
+| No           | No                    | No                     |              47 |           15 |
+| No           | No                    | Yes                    |             180 |           75 |
+| No           | Yes                   | No                     |              65 |           20 |
 | Yes          | No                    | No                     |               0 |            0 |
-| Yes          | No                    | Yes                    |             167 |           55 |
+| Yes          | No                    | Yes                    |             163 |           70 |
 | Yes          | Yes                   | No                     |               0 |            0 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
@@ -70,23 +70,29 @@ Table of Contents
 4. Detailed Control Set Information
 -----------------------------------
 
-+---------------------+------------------------------------------------+----------------------------------+------------------+----------------+
-|     Clock Signal    |                  Enable Signal                 |         Set/Reset Signal         | Slice Load Count | Bel Load Count |
-+---------------------+------------------------------------------------+----------------------------------+------------------+----------------+
-|  state_reg[0]       |                                                | playerCtrl_00/LEN_reg[9]_i_1_n_0 |                1 |              1 |
-|  clk_IBUF_BUFG      | kbd/inst/inst/Ps2Interface_i/bits_count        | rst_IBUF                         |                2 |              4 |
-|  sc/Q[1]            |                                                | rst_IBUF                         |                2 |              4 |
-|  div1/num_reg[13]_0 |                                                |                                  |                2 |              8 |
-|  clk_IBUF_BUFG      | kbd/inst/inst/Ps2Interface_i/rx_valid          | rst_IBUF                         |                2 |              8 |
-|  clk_IBUF_BUFG      | kbd/inst/inst/Ps2Interface_i/rx_finish         | rst_IBUF                         |                2 |              8 |
-|  clk_IBUF_BUFG      | kbd/key                                        | rst_IBUF                         |                2 |             10 |
-|  clk_IBUF_BUFG      | kbd/inst/inst/Ps2Interface_i/frame[10]_i_1_n_0 | rst_IBUF                         |                2 |             11 |
-|  clock_22/S[0]      |                                                | rst_IBUF                         |                4 |             12 |
-|  kbd/E[0]           |                                                | rst_IBUF                         |                7 |             16 |
-|  div1/num_reg[13]_0 |                                                | rst_IBUF                         |                4 |             16 |
-|  clk_IBUF_BUFG      |                                                |                                  |               11 |             38 |
-|  clk_IBUF_BUFG      | kbd/op/E[0]                                    | rst_IBUF                         |               45 |            126 |
-|  clk_IBUF_BUFG      |                                                | rst_IBUF                         |               48 |            134 |
-+---------------------+------------------------------------------------+----------------------------------+------------------+----------------+
++------------------------------------------+------------------------------------------------+----------------------------------------------+------------------+----------------+
+|               Clock Signal               |                  Enable Signal                 |               Set/Reset Signal               | Slice Load Count | Bel Load Count |
++------------------------------------------+------------------------------------------------+----------------------------------------------+------------------+----------------+
+|  servo_claw/convert/angle_left_reg[3]/G0 |                                                |                                              |                1 |              1 |
+|  servo_claw/convert/p_0_in[1]            |                                                | servo_claw/convert/angle_left_reg[3]_i_2_n_0 |                1 |              2 |
+|  sc/Q[1]                                 |                                                | rst_IBUF                                     |                2 |              4 |
+|  clk_IBUF_BUFG                           | kbd/inst/inst/Ps2Interface_i/bits_count        | rst_IBUF                                     |                2 |              4 |
+|  servo_claw/divider/S[0]                 | servo_claw/convert/E[0]                        | rst_IBUF                                     |                3 |              4 |
+|  servo_claw/divider/S[0]                 |                                                | rst_IBUF                                     |                5 |              6 |
+|  servo_claw/divider/S[0]                 | servo_claw/convert/position[6]_i_1_n_0         | rst_IBUF                                     |                2 |              7 |
+|  clk_IBUF_BUFG                           | kbd/inst/inst/Ps2Interface_i/rx_finish         | rst_IBUF                                     |                2 |              8 |
+|  clk_IBUF_BUFG                           | kbd/inst/inst/Ps2Interface_i/rx_valid          | rst_IBUF                                     |                2 |              8 |
+|  div1/num_reg[13]_0                      |                                                |                                              |                3 |              8 |
+|  clk_IBUF_BUFG                           | kbd/key                                        | rst_IBUF                                     |                3 |             10 |
+|  clk_IBUF_BUFG                           | kbd/inst/inst/Ps2Interface_i/frame[10]_i_1_n_0 | rst_IBUF                                     |                3 |             11 |
+|  clock_22/O910                           |                                                | rst_IBUF                                     |                6 |             13 |
+|  div1/num_reg[13]_0                      |                                                | rst_IBUF                                     |                3 |             16 |
+|  kbd/E[0]                                |                                                | rst_IBUF                                     |                7 |             16 |
+|  clk_IBUF_BUFG                           |                                                | servo_claw/count/count[0]_i_1_n_0            |                5 |             20 |
+|  clk_IBUF_BUFG                           |                                                | servo_claw/divider/num[0]_i_1_n_0            |                7 |             27 |
+|  clk_IBUF_BUFG                           |                                                |                                              |               11 |             38 |
+|  clk_IBUF_BUFG                           | kbd/op/E[0]                                    | rst_IBUF                                     |               53 |            111 |
+|  clk_IBUF_BUFG                           |                                                | rst_IBUF                                     |               59 |            141 |
++------------------------------------------+------------------------------------------------+----------------------------------------------+------------------+----------------+
 
 
