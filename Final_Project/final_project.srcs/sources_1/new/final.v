@@ -83,8 +83,6 @@ wire [7:0] ibeatNum;               // Beat counter
 wire [25:0] freqL, freqR;           // Raw frequency, produced by music module
 wire [21:0] freq_outL, freq_outR;    // Processed frequency, adapted to the clock rate of Basys3
 wire clk_div22;
-// Servo
-// reg claw, left_right, bottom;
 // debug
 wire [3:0] index;
 

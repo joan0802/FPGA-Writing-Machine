@@ -116,25 +116,7 @@ module Servo_interface (
             else pwm_bottom <= 1'b0;
         end
     end
-    // always @ (count_max,value_claw) begin
-	//     if (count_max < value_claw) pwm_claw <= 1'b1;
-	//     else pwm_claw <= 1'b0;
-	// end
 
-    // always @ (count_max,value_left) begin
-    //     if (count_max < value_left) pwm_left <= 1'b1;
-    //     else pwm_left <= 1'b0;
-    // end
-
-    // always @ (count_max,value_right) begin
-    //     if (count_max < value_right) pwm_right <= 1'b1;
-    //     else pwm_right <= 1'b0;
-    // end
-
-    // always @ (count_max,value_bottom) begin
-    //     if (count_max < value_bottom) pwm_bottom <= 1'b1;
-    //     else pwm_bottom <= 1'b0;
-    // end
     // Counts up to a certain value and then resets.
     // This module creates the refresh rate of 20ms.   
     counter count(
@@ -524,47 +506,39 @@ module sw_to_angle(
     // changes
     // reg claw, left, right, bottom;
     always @ (*) begin
-        // if(rst) begin
-        //     angle_claw = 7'b0;
-        //     angle_left = 7'b0;
-        //     angle_right = 7'b0;
-        //     angle_bottom = 7'b0;
-        // end
-        // else begin
-            if(sw[0] == 1'b1) 
-                angle_claw = 7'b110000;
-            else
-                angle_claw = 7'b0; // NEED TO CHANGE
 
-            if(cur_angle_fb[8:7] == 2'b00)
-                angle_left = 7'b0;
-            else if(nextIsWriting == 1'b0 || index == 4'd0) begin
-                angle_left = 7'b0001010;
-            end
-            else if(index == 4'd1) begin
-                angle_left = 7'b0;
-            end
-            // else if(cur_angle_fb[8:7] == 2'b10 && cur_angle_fb[6:0] == 7'b0001100)
-            //     angle_left = 7'b0000011;
-            else
-                angle_left = angle_left;
-            
-            if(cur_angle_fb[8:7] == 2'b00)
-                angle_right = 7'b0;
-            else if(cur_angle_fb[8:7] == 2'b10)
-                angle_right = cur_angle_fb[6:0];
-            else
-                angle_right = angle_right;
+        if(sw[0] == 1'b1) 
+            angle_claw = 7'b110000;
+        else
+            angle_claw = 7'b0; // NEED TO CHANGE
 
-            if(cur_angle_lr[8:7] == 2'b00)
-                angle_bottom = position;
-            else if(isWriting == 1'b0) begin
-                angle_bottom = position;
-            end
-            else if(cur_angle_lr[8:7] == 2'b11)
-                angle_bottom = position + cur_angle_lr[6:0];
-            else
-                angle_bottom = angle_bottom;
+        if(cur_angle_fb[8:7] == 2'b00)
+            angle_left = 7'b0;
+        else if(nextIsWriting == 1'b0 || index == 4'd0) begin
+            angle_left = 7'b0001010;
         end
-    // end
+        else if(index == 4'd1) begin
+            angle_left = 7'b0;
+        end
+        else
+            angle_left = angle_left;
+        
+        if(cur_angle_fb[8:7] == 2'b00)
+            angle_right = 7'b0;
+        else if(cur_angle_fb[8:7] == 2'b10)
+            angle_right = cur_angle_fb[6:0];
+        else
+            angle_right = angle_right;
+
+        if(cur_angle_lr[8:7] == 2'b00)
+            angle_bottom = position;
+        else if(isWriting == 1'b0) begin
+            angle_bottom = position;
+        end
+        else if(cur_angle_lr[8:7] == 2'b11)
+            angle_bottom = position + cur_angle_lr[6:0];
+        else
+            angle_bottom = angle_bottom;
+    end
+
 endmodule
