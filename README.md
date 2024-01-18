@@ -1,5 +1,5 @@
 # FPGA Writing Machine
-Collaborator: 蔡杰恩、許伊辰
+Collaborator: Jie En Tsai, Yi Chen Hsu
 
 ## 1. Design Concept
 
@@ -40,10 +40,10 @@ In the TYPING State, numbers 0-9 can be entered via the keyboard and displayed o
 
 **LED** 
 
-- LED[15:12]: Lights up in IDLE State
-- LED[11:8]: Lights up in TYPING State
-- LED[7:4]: Lights up in WRITING State
-- LED[3:0]:  Binary corresponds to pen strokes
+- `LED[15:12]`: Lights up in IDLE State
+- `LED[11:8]`: Lights up in TYPING State
+- `LED[7:4]`: Lights up in WRITING State
+- `LED[3:0]`:  Binary corresponds to pen strokes
     The 0th stroke corresponds to 4’b0001, the 1st to 4’b0010, and so on.
 
 **Audio** 
