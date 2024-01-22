@@ -1,5 +1,5 @@
 # FPGA Writing Machine
-Collaborator: Jie En Tsai, Yi Chen Hsu
+Collaborator: [Jie En Tsai](https://github.com/joan0802), [Yi Chen Hsu](https://github.com/gunjyo0817)
 
 ## 1. Design Concept
 
